@@ -1,31 +1,32 @@
-import {useLocation} from "react-router-dom";
-//import sidebar 명칭 겹침;;
-//`main_sidebar`, "admin_sidebar"
-
-import React, {useState} from 'react';
+import React from 'react';
+import Admin from "../../user/Admin";
+import Student from "../../user/Student";
+import Professor from "../../user/Professor";
 
 const GlobalSidebar = () => {
 
+    const user = { id: 1, name: "오성", role: "ADMIN" };
+
     return (
-        <div>
-                <div className={`main_sidebar`}>
-                        <div className="admin_sidebar">
-                            {(user && user.role === 'ADMIN') && <div className={`first_menu`} >
-                                <AdminMenu/>
-                           </div>}
-                        </div>
-                        <div className="student_sidebar">
-                        {(user && user.role === 'ADMIN') && <div className={`first_menu`} >
-                            <StudentMenu/>
-                        </div>}
-                         </div>
-                        <div className="professor_sidebar">
-                        {(user && user.role === 'ADMIN') && <div className={`first_menu`} >
-                            <ProfessorMenu/>
-                        </div>}
+        <>
+            <div className="main_sidebar">
+                {user && user.role === 'ADMIN' && (
+                    <div className="admin_sidebar">
+                        <Admin />
                     </div>
-                </div>
-        </div>
+                )}
+                {user && user.role === 'STUDENT' && (
+                    <div className="student_sidebar">
+                        <Student />
+                    </div>
+                )}
+                {user && user.role === 'PROFESSOR' && (
+                    <div className="professor_sidebar">
+                        <Professor />
+                    </div>
+                )}
+            </div>
+        </>
     );
 };
 
