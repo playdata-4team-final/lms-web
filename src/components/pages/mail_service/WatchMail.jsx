@@ -1,38 +1,156 @@
-import React, {useEffect, useState} from 'react';
+
+import React, { useEffect, useState } from 'react';
+import { api } from "../../api/api";
+import "./WatchMail.css";
 
 
 const WatchMail = () => {
+    const [user, setUser] = useState();
+    const [mails, setMails] = useState([]);
+    const [selectedMails, setSelectedMails] = useState([]);
 
-    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        // Simulating asynchronous fetch of user data
-        const fetchUser = () => {
-            const token = { id: 1, name: "오성", role: "PROFESSOR" };
-            setUser(token);
-        }
+        const fetchUser = async () => {
+            try {
+                const token = { id: 1, name: "오성", role: "PROFESSOR", email: "john.doe@example.com" };
+                setUser(token);
+
+                const watchRequest = {
+                    receiverEmail: token.email,
+                };
+
+                const response = await api('api/v1/mail/getAll', 'POST', watchRequest);
+                setMails(response.data.data);
+            } catch (error) {
+                alert('Error fetching user and mails:', error);
+            }
+        };
 
         fetchUser();
     }, []);
 
+
+    const handleCheckboxChange = (event, mail) => {
+        if (event.target.checked) {
+            setSelectedMails(prevSelected => [...prevSelected, mail]);
+        } else {
+            setSelectedMails(prevSelected => prevSelected.filter(selectedMail => selectedMail.id !== mail.id));
+        }
+    }
+    const handleDeleteSelectedMails = async () => {
+        try {
+            const response = await api('api/v1/mail/deleteMail', 'DELETE', { mailIds: selectedMails.map(mail => mail.id) });
+            if (response.ok) {
+                alert('메일 삭제 성공!');
+            } else {
+                alert('메일 삭제 실패:', response.statusText);
+            }
+        } catch (error) {
+            alert('Error deleting mails:', error);
+        }
+    };
+
+    console.log(mails);
+
     return (
         <div className={"_right-content"}>
-
             {user && user.role === 'ADMIN' && (
                 <div className="admin-mail">
-                    <div>Admin 내용</div>
+                    <button onClick={handleDeleteSelectedMails}>삭제</button>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>보낸 사람</th>
+                            <th>보낸 날짜</th>
+                            <th>제목</th>
+                            <th>내용</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {mails.map(mail => (
+                            <tr key={mail.id}>
+                                <td>{mail.sender}</td>
+                                <td>{mail.sendTime}</td>
+                                <td>{mail.title}</td>
+                                <td>{mail.message}</td>
+                                <td>
+                                    <input
+                                        type="checkbox"
+                                        onChange={(event) => handleCheckboxChange(event, mail)}
+                                        checked={selectedMails.some(selectedMail => selectedMail.id === mail.id)}
+                                    />
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
                 </div>
             )}
 
             {user && user.role === 'PROFESSOR' && (
                 <div className="professor-mail">
-                    <div>Professor 내용</div>
+                    <button onClick={handleDeleteSelectedMails}>삭제</button>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>보낸 사람</th>
+                            <th>보낸 날짜</th>
+                            <th>제목</th>
+                            <th>내용</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {mails.map(mail => (
+                            <tr key={mail.id}>
+                                <td>{mail.senderEmail}</td>
+                                <td>{mail.sendTime}</td>
+                                <td>{mail.title}</td>]
+                                <td>{mail.message}</td>
+                                <td>
+                                    <input
+                                        type="checkbox"
+                                        onChange={(event) => handleCheckboxChange(event, mail)}
+                                        checked={selectedMails.some(selectedMail => selectedMail.id === mail.id)}
+                                    />
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
                 </div>
             )}
 
             {user && user.role === 'STUDENT' && (
                 <div className="student-mail">
-                    <div>Student 내용</div>
+                    <button onClick={handleDeleteSelectedMails}>삭제</button>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>보낸 사람</th>
+                            <th>보낸 날짜</th>
+                            <th>제목</th>
+                            <th>내용</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {mails.map(mail => (
+                            <tr key={mail.id}>
+                                <td>{mail.senderEmail}</td>
+                                <td>{mail.sendTime}</td>
+                                <td>{mail.title}</td>]
+                                <td>{mail.message}</td>
+                                <td>
+                                    <input
+                                        type="checkbox"
+                                        onChange={(event) => handleCheckboxChange(event, mail)}
+                                        checked={selectedMails.some(selectedMail => selectedMail.id === mail.id)}
+                                    />
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
                 </div>
             )}
 
@@ -44,4 +162,3 @@ const WatchMail = () => {
 };
 
 export default WatchMail;
-
