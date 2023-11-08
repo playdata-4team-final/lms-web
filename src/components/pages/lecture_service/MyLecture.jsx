@@ -6,6 +6,7 @@ const MyLecture = () => {
     return (
         <div>
             <div>
+                내강의
             </div>
         </div>
     );

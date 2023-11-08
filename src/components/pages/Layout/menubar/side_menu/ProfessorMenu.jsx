@@ -1,72 +1,48 @@
 import React, { useState } from 'react';
 import MailMenu from './in_menu/MailMenu';
 import NoticeMenu from "./in_menu/NoticeMenu";
-import LectureService from "../../../lecture_service/LectureService";
+import LectureMenu from "./in_menu/LectureMenu";
+
 
 const ProfessorMenu = () => {
-    const [mailModal, setMailModal] = useState(false);
-    const [lectureModal, setLectureModal] = useState(false);
-    const [noticeModal, setNoticeModal] =useState(false);
+    const [selectedMenu, setSelectedMenu] = useState(null);
 
-    const handleMailClick = () => {
-        setMailModal(true);
-    }
+    const openModal = (menu) => {
+        setSelectedMenu(menu);
+    };
 
-    const handleLectureClick = () => {
-        setLectureModal(true);
-    }
-
-    const handleNoticeClick = () => {
-        setNoticeModal(true);
-    }
-
-    const handleLectureCloseModal = () => {
-        setLectureModal(false);
-    }
-
-    const handleMailCloseModal = () => {
-        setMailModal(false);
-
-    }
-
-    const handleNoticeCloseModal = () => {
-        setNoticeModal(false);
-    }
+    const closeModal = () => {
+        setSelectedMenu(null);
+    };
 
     return (
         <div>
-            <div onClick={handleMailClick}>
-                MailMenu
-            </div>
-            <div onClick={handleLectureClick}>
-                LectureMenu
-            </div>
-            <div onClick={handleNoticeClick}>
-                NoticeMenu
-            </div>
+            <div onClick={() => openModal('mail')}>메일 서비스</div>
+            <div onClick={() => openModal('lecture')}>강의 서비스</div>
+            <div onClick={() => openModal('notice')}>공지사항</div>
 
-            {mailModal && (
+            {selectedMenu  === 'mail' && (
                 <div className="modal">
                     <div className="modal-content">
-                        <span className="close" onClick={handleMailCloseModal}>&times;</span>
+                        <span className="close" onClick={closeModal}>&times;</span>
                         <MailMenu />
                     </div>
                 </div>
             )}
 
-            {mailModal && (
+            {selectedMenu === 'lecture'  && (
                 <div className="modal">
                     <div className="modal-content">
-                        <span className="close" onClick={handleLectureCloseModal}>&times;</span>
-                        <LectureService />
+                        <span className="close" onClick={closeModal}>&times;</span>
+                        <LectureMenu />
                     </div>
                 </div>
             )}
 
-            {mailModal && (
+            {selectedMenu === 'notice' && (
                 <div className="modal">
                     <div className="modal-content">
-                        <span className="close" onClick={handleNoticeCloseModal}>&times;</span>
+                        <span className="close" onClick={closeModal}>&times;</span>
                         <NoticeMenu />
                     </div>
                 </div>

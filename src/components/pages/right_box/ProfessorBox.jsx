@@ -2,13 +2,13 @@ import { Outlet } from "react-router"
 import ProfessorMenu from "../Layout/menubar/side_menu/ProfessorMenu";
 
 
-const Professor = ({children}) => {
+const ProfessorBox = ({children}) => {
 
-    return (<div className={"_right-content"}>
-            {children}
+    return (<div>
+            <Outlet>{children}</Outlet>
         </div>
     )
 
 }
 
-export default Professor;
+export default ProfessorBox;

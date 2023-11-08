@@ -26,7 +26,7 @@ const GlobalHeader = () => {
                         <div className="user-name" value = "`${user.name}`"/>
                     </div>
                     <div>
-                        <Link to="/home" className="logout">로그아웃</Link>
+                        <Link to="/" className="logout">로그아웃</Link>
                     </div>
                     <div />
                     {(user && user.role === 'ADMIN') && <Link to = "admin/mail/watchMail">✉️내 쪽지</Link>}

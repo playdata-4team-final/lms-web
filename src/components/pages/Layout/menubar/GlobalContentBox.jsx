@@ -1,9 +1,9 @@
 import React from 'react';
-import Admin from "../../user/Admin";
-import Student from "../../user/Student";
-import Professor from "../../user/Professor";
+import AdminBox from "../../right_box/AdminBox";
+import StudentBox from "../../right_box/StudentBox";
+import ProfessorBox from "../../right_box/ProfessorBox";
 
-const GlobalSidebar = () => {
+const GlobalContentBox = () => {
 
     const user = { id: 1, name: "오성", role: "ADMIN" };
 
@@ -11,18 +11,18 @@ const GlobalSidebar = () => {
         <>
             <div className="main_sidebar">
                 {user && user.role === 'ADMIN' && (
-                    <div className="admin_sidebar">
-                        <Admin />
+                    <div className="_sidebar">
+                        <AdminBox />
                     </div>
                 )}
                 {user && user.role === 'STUDENT' && (
-                    <div className="student_sidebar">
-                        <Student />
+                    <div className="_sidebar">
+                        <StudentBox />
                     </div>
                 )}
                 {user && user.role === 'PROFESSOR' && (
-                    <div className="professor_sidebar">
-                        <Professor />
+                    <div className="_sidebar">
+                        <ProfessorBox />
                     </div>
                 )}
             </div>
@@ -30,4 +30,4 @@ const GlobalSidebar = () => {
     );
 };
 
-export default GlobalSidebar;
+export default GlobalContentBox;

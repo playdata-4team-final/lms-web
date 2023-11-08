@@ -3,13 +3,13 @@ import Home from "../../pages/home/Home";
 import WriteMail from "../../pages/mail_service/WriteMail";
 import WatchMail from "../../pages/mail_service/WatchMail";
 import Login from "../../pages/login/Login";
-import Admin from "../../pages/user/Admin";
+import AdminBox from "../../pages/right_box/AdminBox";
 import AcceptMajor from "../../pages/accept_service/AcceptMajor";
 import AcceptLecture from "../../pages/accept_service/AcceptLecture";
 import WriteNotice from "../../pages/notice__service/WriteNotice";
 import WatchNotice from "../../pages/notice__service/WatchNotice";
-import Student from "../../pages/user/Student";
-import Professor from "../../pages/user/Professor";
+import StudentBox from "../../pages/right_box/StudentBox";
+import ProfessorBox from "../../pages/right_box/ProfessorBox";
 import ApplyLecture from "../../pages/lecture_service/ApplyLecture";
 import MyLecture from "../../pages/lecture_service/MyLecture";
 import SendLecture from "../../pages/lecture_service/SendLecture";
@@ -24,7 +24,7 @@ const GlobalRoutes = () => {
                 <Route path="/" element={<Login />} />
                 <Route element={<MainLayout />}>
                     <Route path="/main" element={<Home />} />
-                    <Route path="/admin/*" element={<Admin />}>
+                    <Route path="/admin/*" element={<AdminBox />}>
                         <Route path="accept/*" >
                             <Route path="acceptMajor" element={<AcceptMajor />} />
                             <Route path="acceptLecture" element={<AcceptLecture />} />
@@ -38,7 +38,7 @@ const GlobalRoutes = () => {
                             <Route path="watchNotice" element={<WatchNotice />} />
                         </Route>
                     </Route>
-                    <Route path="/student/*" element={<Student />}>
+                    <Route path="/student/*" element={<StudentBox />}>
                         <Route path="lecture/*">
                             <Route path="sendLecture" element={<SendLecture />} />
                             <Route path="myLecture" element={<MyLecture />} />
@@ -51,7 +51,7 @@ const GlobalRoutes = () => {
                             <Route path="watchNotice" element={<WatchNotice />} />
                         </Route>
                     </Route>
-                    <Route path="/professor/*" element={<Professor />}>
+                    <Route path="/professor/*" element={<ProfessorBox />}>
                         <Route path="lecture/*" >
                             <Route path="applyLecture" element={<ApplyLecture />} />
                             <Route path="myLecture" element={<MyLecture />} />

@@ -1,15 +1,15 @@
 import GlobalHeader from "../../pages/Layout/menubar/GlobalHeader";
 import GlobalFooter from "../../pages/Layout/menubar/GlobalFooter";
-import GlobalSidebar from "../../pages/Layout/menubar/GlobalSidebar";
+import GlobalContentBox from "../../pages/Layout/menubar/GlobalContentBox";
 import AdminMenu from "../../pages/Layout/menubar/side_menu/AdminMenu";
-import "../../pages/Layout/menubar/GlobalSidebar.css";
+import "../../pages/Layout/menubar/MainLayout.css";
 import ProfessorMenu from "../../pages/Layout/menubar/side_menu/ProfessorMenu";
 import StudentMenu from "../../pages/Layout/menubar/side_menu/StudentMenu";
 import {setUserStatus} from "../future/userSlice";
 
-const MainLayout = ({children}) => {
+const MainLayout = () => {
 
-    const user = { id: 1, name: "오성", role: "STUDENT" }
+    const user = { id: 1, name: "오성", role: "PROFESSOR" }
 
     return <>
         <GlobalHeader />
@@ -27,8 +27,7 @@ const MainLayout = ({children}) => {
 
             </div>
             <div className="_right-box">
-                <GlobalSidebar/>
-                {children}
+                <GlobalContentBox/>
             </div>
             <GlobalFooter />
         </div>
