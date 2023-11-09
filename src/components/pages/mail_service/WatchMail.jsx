@@ -13,11 +13,12 @@ const WatchMail = () => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const token = { id: 1, name: "오성", role: "PROFESSOR", email: "john.doe@example.com" };
+                const token = { id: 1, name: "오성", role: "PROFESSOR", email: "john.doe@example.com", majorId: 1 };
                 setUser(token);
 
                 const watchRequest = {
                     receiverEmail: token.email,
+                    majorId: token.majorId
                 };
 
                 const response = await api('api/v1/mail/getAll', 'POST', watchRequest);
@@ -41,7 +42,7 @@ const WatchMail = () => {
     const handleDeleteSelectedMails = async () => {
         try {
             const response = await api('api/v1/mail/deleteMail', 'DELETE', { mailIds: selectedMails.map(mail => mail.id) });
-            if (response.ok) {
+            if (response === null) {
                 alert('메일 삭제 성공!');
             } else {
                 alert('메일 삭제 실패:', response.statusText);

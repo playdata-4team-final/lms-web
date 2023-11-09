@@ -30,14 +30,48 @@ const WriteMail = () => {
     }, []);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setFormData({
             ...formData,
             [name]: value
         });
     };
 
-    const handleSubmit = async (e) => {
+    const handleProfessorSubmit = async (e) => {
+        e.preventDefault();
+
+        const sendGroupRequest = {
+            title: formData.title,
+            content: formData.content,
+            senderEmail: myEmail,
+            majorId: user.majorId
+        };
+
+
+        const professorResponse = await api('/api/v1/mail/sendGroupMailByProfessor', 'POST', sendGroupRequest)
+
+        if (professorResponse.data.errMsg  === null) {
+            alert('쪽지 전송 성공!');
+            setFormData({
+                title: '',
+                email: '',
+                content: '',
+                majorId: ''
+            });
+        } else {
+            alert('쪽지 전송 실패');
+            setFormData({
+                title: '',
+                email: '',
+                content: '',
+                majorId: ''
+            });
+        }
+
+
+    }
+
+    const handleStudentSubmit = async (e) => {
         e.preventDefault();
         const sendRequest = {
             title: formData.title,
@@ -47,72 +81,208 @@ const WriteMail = () => {
             majorId: user.majorId
         };
 
-        const response = await api('/api/v1/mail/sendMail', 'POST', sendRequest);
-        console.log(response);
-        if (response.data.errMsg === null ) {
-                alert('쪽지 전송 성공!');
-                setFormData({
-                    title: '',
-                    email: '',
-                    content: '',
-                    majorId: ''
-                });
-            } else {
-                alert('쪽지 전송 실패');
-                setFormData({
-                    title: '',
-                    email: '',
-                    content: '',
-                    majorId: ''
-                });
-            }
+        const sendGroupRequest = {
+            title: formData.title,
+            senderEmail: myEmail,
+            majorId: user.majorId
+        };
+
+
+        const studentResponse = await api('/api/v1/mail/sendMail', 'POST', sendRequest)
+        const professorResponse = await api('/api/v1/mail/sendGroupMailByProfessor', 'POST', sendGroupRequest)
+        const adminResponse = await api('/api/v1/mail/sendGroupMailToAllUser', 'POST', sendGroupRequest)
+
+        if (studentResponse.data.errMsg || professorResponse.data.errMsg || adminResponse.data.errMsg === null) {
+            alert('쪽지 전송 성공!');
+            setFormData({
+                title: '',
+                email: '',
+                content: '',
+                majorId: ''
+            });
+        } else {
+            alert('쪽지 전송 실패');
+            setFormData({
+                title: '',
+                email: '',
+                content: '',
+                majorId: ''
+            });
         }
 
-    return (
-        <div className="_right-content">
-            <div>쪽지 쓰기</div>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="title">제목:</label>
-                    <input
-                        type="text"
-                        id="title"
-                        name="title"
-                        value={formData.title}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="email">작성자 이메일:</label>
-                    <input
-                        id="email"
-                        name="email"
-                        value={myEmail}
-                        readOnly={true}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="email">대상 이메일:</label>
-                    <input
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="content">내용:</label>
-                    <textarea
-                        id="content"
-                        name="content"
-                        value={formData.content}
-                        onChange={handleChange}
-                    />
-                </div>
-                <button type="submit">보내기</button>
-            </form>
-        </div>
-    );
-};
 
-export default WriteMail;
+    }
+
+    const handleAdminSubmit = async (e) => {
+        e.preventDefault();
+
+        const sendGroupRequest = {
+            title: formData.title,
+            senderEmail: myEmail,
+            majorId: user.majorId
+        };
+
+
+        const adminResponse = await api('/api/v1/mail/sendGroupMailToAllUser', 'POST', sendGroupRequest)
+
+        if (adminResponse.data.errMsg === null) {
+            alert('쪽지 전송 성공!');
+            setFormData({
+                title: '',
+                email: '',
+                content: '',
+                majorId: ''
+            });
+        } else {
+            alert('쪽지 전송 실패');
+            setFormData({
+                title: '',
+                email: '',
+                content: '',
+                majorId: ''
+            });
+        }
+
+
+    }
+
+    return (<>
+        <div>
+            {user && (user.role === 'ADMIN') && (
+                <div className="_right-content">
+                    <div>쪽지 쓰기</div>
+                    <form onSubmit={handleAdminSubmit}>
+                        <div>
+                            <label htmlFor="title">제목:</label>
+                            <input
+                                type="text"
+                                id="title"
+                                name="title"
+                                value={formData.title}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="email">작성자 이메일:</label>
+                            <input
+                                id="email"
+                                name="email"
+                                value={myEmail}
+                                readOnly={true}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="content">내용:</label>
+                            <textarea
+                                id="content"
+                                name="content"
+                                value={formData.content}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <button type="submit">보내기</button>
+                    </form>
+                </div>
+            )}
+
+            {user && (user.role === 'STUDENT') && (
+                <div className="_right-content">
+                    <div>쪽지 쓰기</div>
+                    <form onSubmit={handleStudentSubmit}>
+                        <div>
+                            <label htmlFor="title">제목:</label>
+                            <input
+                                type="text"
+                                id="title"
+                                name="title"
+                                value={formData.title}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="email">작성자 이메일:</label>
+                            <input
+                                id="email"
+                                name="email"
+                                value={myEmail}
+                                readOnly={true}
+                            />
+                        </div>
+                        <div>
+                                <label htmlFor="targetEmail">대상 이메일:</label>
+                                <input
+                                    id="targetEmail"
+                                    name="targetEmail"
+                                    value={formData.targetEmail}
+                                    onChange={handleChange}/>
+                        </div>
+                        <div>
+                            <label htmlFor="content">내용:</label>
+                            <textarea
+                                id="content"
+                                name="content"
+                                value={formData.content}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <button type="submit">보내기</button>
+                    </form>
+                </div>
+            )}
+
+            {user && (user.role === 'PROFESSOR') && (
+                <div className="_right-content">
+                    <div>쪽지 쓰기</div>
+                    <form onSubmit={handleProfessorSubmit}>
+                        <div>
+                            <label htmlFor="title">제목:</label>
+                            <input
+                                type="text"
+                                id="title"
+                                name="title"
+                                value={formData.title}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="email">작성자 이메일:</label>
+                            <input
+                                id="email"
+                                name="email"
+                                value={myEmail}
+                                readOnly={true}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="targetEmail">전공 ID:</label>
+                            <input
+                                    id="targetMajorId"
+                                    name="targetMajorId"
+                                    value={formData.targetMajorId}
+                                    onChange={handleChange}
+                            />
+                        </div>
+
+                        <div>
+                            <label htmlFor="content">내용:</label>
+                            <textarea
+                                id="content"
+                                name="content"
+                                value={formData.content}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <button type="submit">보내기</button>
+                    </form>
+                </div>
+            )}
+        </div>
+
+
+
+        </>
+
+    );
+
+}
+    export default WriteMail;
