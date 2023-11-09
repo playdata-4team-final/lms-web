@@ -41,8 +41,9 @@ const WatchMail = () => {
     }
     const handleDeleteSelectedMails = async () => {
         try {
-            const response = await api('api/v1/mail/deleteMail', 'DELETE', { mailIds: selectedMails.map(mail => mail.id) });
-            if (response === null) {
+            const response = await api('api/v1/mail/deleteMails', 'POST', { mailIds: selectedMails.map(mail => mail.id) });
+            console.log(response.data)
+            if (response.data.errorMsg === '') {
                 alert('메일 삭제 성공!');
             } else {
                 alert('메일 삭제 실패:', response.statusText);

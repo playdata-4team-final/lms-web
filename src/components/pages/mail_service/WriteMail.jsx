@@ -42,15 +42,15 @@ const WriteMail = () => {
 
         const sendGroupRequest = {
             title: formData.title,
-            content: formData.content,
+            message: formData.content,
             senderEmail: myEmail,
             majorId: user.majorId
         };
 
 
         const professorResponse = await api('/api/v1/mail/sendGroupMailByProfessor', 'POST', sendGroupRequest)
-
-        if (professorResponse.data.errMsg  === null) {
+        console.log(professorResponse.data)
+        if (professorResponse.data.errorMsg  === "") {
             alert('쪽지 전송 성공!');
             setFormData({
                 title: '',
@@ -89,10 +89,9 @@ const WriteMail = () => {
 
 
         const studentResponse = await api('/api/v1/mail/sendMail', 'POST', sendRequest)
-        const professorResponse = await api('/api/v1/mail/sendGroupMailByProfessor', 'POST', sendGroupRequest)
-        const adminResponse = await api('/api/v1/mail/sendGroupMailToAllUser', 'POST', sendGroupRequest)
 
-        if (studentResponse.data.errMsg || professorResponse.data.errMsg || adminResponse.data.errMsg === null) {
+
+        if (studentResponse.data.errorMsg === "") {
             alert('쪽지 전송 성공!');
             setFormData({
                 title: '',
@@ -119,6 +118,7 @@ const WriteMail = () => {
         const sendGroupRequest = {
             title: formData.title,
             senderEmail: myEmail,
+            message: formData.content,
             majorId: user.majorId
         };
 
