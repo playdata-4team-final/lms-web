@@ -1,0 +1,113 @@
+.calendar {
+  width: 440px;
+  height: 350px;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 5px rgba(175, 85, 85, 0.1);
+  margin-bottom: 23px;
+  padding: 20px;
+}
+
+.calendarNav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.calendarNav-title {
+  display: flex;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center; /* 가운데 정렬 추가 */
+}
+.current-month {
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+
+.calendarNav-button button {
+  font-size: 20px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.calendar_font {
+  font-size: 15px;
+  color: orange;
+  margin-left: 20px;
+  margin-right: 70px;
+}
+
+.calendarNav-button button:hover {
+  color: #b6c65e;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+th {
+  text-align: center;
+  background-color: #e8a01b;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+}
+
+td {
+  text-align: center;
+  padding: 15px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+td.prevMonthDay {
+  color: #ccc;
+}
+
+td.nextMonthDay {
+  color: #ccc;
+}
+
+td.prevDay {
+  color: #ccc;
+}
+
+td.futureDay {
+  color: #000;
+}
+
+button.prevMonth-button,
+button.nextMonth-button {
+  font-size: 20px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+button.prevMonth-button:hover,
+button.nextMonth-button:hover {
+  color: #007bff;
+}
+.orange-circle {
+  background-color: orange;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  text-align: center;
+  line-height: 30px;
+  color: white;
+  font-weight: bold;
+}

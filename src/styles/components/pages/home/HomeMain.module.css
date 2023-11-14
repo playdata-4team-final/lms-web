@@ -1,0 +1,24 @@
+/* HomeMain.module.css */
+
+.main_container {
+  text-align: center;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.main_container h1 {
+  font-size: 2em;
+  color: #333;
+}
+
+.main_container p {
+  font-size: 1.2em;
+  color: #555;
+}
+.image_container {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 20px 10px 20px;
+}
