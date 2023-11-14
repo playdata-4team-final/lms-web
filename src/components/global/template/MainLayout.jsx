@@ -6,6 +6,7 @@ import "../../pages/Layout/menubar/MainLayout.css";
 import ProfessorMenu from "../../pages/Layout/menubar/side_menu/ProfessorMenu";
 import StudentMenu from "../../pages/Layout/menubar/side_menu/StudentMenu";
 import { setUserStatus } from "../future/userSlice";
+import Cursor from "../../atoms/Cursor";
 
 const MainLayout = () => {
   const user = { id: 1, name: "오성", role: "PROFESSOR" };
@@ -14,7 +15,7 @@ const MainLayout = () => {
     <>
       <GlobalHeader />
       <div className={"main-box"}>
-        <div className="_left-box">
+        {/* <div className="_left-box">
           {user && user.role === "ADMIN" && (
             <div className="_button-list">
               <AdminMenu />
@@ -30,11 +31,10 @@ const MainLayout = () => {
               <StudentMenu />
             </div>
           )}
-        </div>
+        </div> */}
         <div className="_right-box">
           <GlobalContentBox />
         </div>
-        <GlobalFooter />
       </div>
     </>
   );

@@ -1,18 +1,15 @@
 import React from "react";
 import styles from "../../../styles/components/pages/home/Home.module.css";
-import HomeHeader from "./HomeHeader";
-
+import { useRecoilValue } from "recoil";
+import { roleSelector } from "../../global/atom/LoginAtom";
 import HomeMain from "./HomeMain";
-import Cursor from "../../atoms/Cursor";
-import Calendar from "../../atoms/Calander";
 
 const Home = () => {
+  const role = useRecoilValue(roleSelector);
+  console.log("권한: " + role);
   return (
     <div className={styles.home_container}>
-      <Cursor />
-      <HomeHeader />
       <HomeMain />
-
       <div className={styles.button_container}></div>
     </div>
   );

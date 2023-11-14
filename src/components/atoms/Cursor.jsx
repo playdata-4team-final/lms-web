@@ -120,6 +120,7 @@ function AnimatedCursor({
       opacity: "1",
       pointerEvents: "none",
       transition: "opacity 0.15s ease-in-out, transform 0.15s ease-in-out",
+      borderRadius: "50%",
     },
     cursorInner: {
       zIndex: 10000,
@@ -130,6 +131,14 @@ function AnimatedCursor({
       pointerEvents: "none",
       backgroundColor: `rgba(${color}, 1)`,
       transition: "opacity 0.15s ease-in-out, transform 0.25s ease-in-out",
+    },
+    customElement: {
+      zIndex: 10001, // Ensure it's above cursorInner
+      position: "fixed",
+      width: "10px",
+      height: "10px",
+      borderRadius: "50%",
+      backgroundColor: "blue", // Adjust color as needed
     },
   };
 

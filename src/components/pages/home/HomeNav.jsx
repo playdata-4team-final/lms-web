@@ -39,6 +39,7 @@ const StyledList = styled.li`
   --hover-text: #000000;
   --hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   margin-right: 5px;
+  margin-top: 5px;
   border-radius: 24px;
   padding: 16px 32px;
   font-family: "Roboto";
@@ -109,10 +110,7 @@ const HomeNav = ({ userRole }) => {
             </a>
           </StyledList>
           <StyledList className="dark">
-            <a
-              href="#packages"
-              style={{ color: "black", textDecoration: "none" }}
-            >
+            <a href="/" style={{ color: "black", textDecoration: "none" }}>
               <div>
                 <span>공</span>
                 <span>지</span>
@@ -122,10 +120,7 @@ const HomeNav = ({ userRole }) => {
             </a>
           </StyledList>
           <StyledList className="dark">
-            <a
-              href="#내정보"
-              style={{ color: "black", textDecoration: "none" }}
-            >
+            <a href="/my" style={{ color: "black", textDecoration: "none" }}>
               <div>
                 <span>M</span>
                 <span>y</span>
