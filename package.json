@@ -20,7 +20,7 @@
     "react-simple-star-rating": "^5.1.7",
     "redux-persist": "^6.0.0",
     "styled-components": "^6.0.7",
-    "swiper": "^10.2.0",
+    "swiper": "^10.3.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

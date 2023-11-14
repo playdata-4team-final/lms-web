@@ -1,14 +1,13 @@
 import React from "react";
-import { SiAccusoft } from "react-icons/si";
-
 import styles from "../../styles/components/atoms/HomeLogo.module.css";
-const HomeLogo = () => {
+
+const MainLogo = () => {
   return (
     <div className={styles.logo_container}>
-      <SiAccusoft size="24px" color="orange" />
-      <h3>HeLMeS</h3>
+      {/* 절대 경로로 이미지를 로드합니다. */}
+      <img src="/images/lms.jpg" alt="lms" />
     </div>
   );
 };
 
-export default HomeLogo;
+export default MainLogo;

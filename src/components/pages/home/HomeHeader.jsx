@@ -1,36 +1,14 @@
-import React from "react";
-import styled from "styled-components";
+import styles from "../../../styles/components/pages/home/HomeHeader.module.css";
+import HomeLogo from "../../atoms/HomeLogo";
 
-const HeaderContainer = styled.div`
-  background: white;
-  position: sticky;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  top: 0;
-  width: 100%;
-  height: 7vh;
-  z-index: 99;
-`;
-const IconWrap = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  img {
-    max-width: 100%;
-    height: auto;
-  }
-`;
+import HomeNav from "./HomeNav";
 
 const HomeHeader = () => {
   return (
-    <HeaderContainer>
-      <IconWrap>
-        <img src="C:\final\lms-web\public\images\Homelogo.png" alt="HeLMeS" />
-      </IconWrap>
-    </HeaderContainer>
+    <div className={styles.header_container}>
+      <HomeLogo />
+      <HomeNav />
+    </div>
   );
 };
 

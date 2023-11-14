@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../../styles/atoms/Calendar2.css";
-
+import styles from "../../styles/components/atoms/Calander.module.css";
 const Calendar = ({
   selectedDay,
   setSelectedDay,
