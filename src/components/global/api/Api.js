@@ -21,8 +21,8 @@ export const exceptionApi = async (url, method, data) => {
     });
 
     if (body.data.code !== 'OK') {
-        body.data.
         alert(body.data.errorMsg);
+        return '';
     }
 
     return body.data;
