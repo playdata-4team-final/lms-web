@@ -20,7 +20,6 @@ const ProfessorMenu = () => {
             {selectedMenu === 'mail' && (
                 <div className="modal">
                     <div className="modal-content">
-                        {/* <span className="close" onClick={closeModal}>&times;</span> */}
                         <MailMenu />
                     </div>
                 </div>
@@ -30,7 +29,6 @@ const ProfessorMenu = () => {
             {selectedMenu === 'lecture' && (
                 <div className="modal">
                     <div className="modal-content">
-                        {/* <span className="close" onClick={closeModal}>&times;</span> */}
                         <LectureMenu />
                     </div>
                 </div>
@@ -40,13 +38,10 @@ const ProfessorMenu = () => {
             {selectedMenu === 'notice' && (
                 <div className="modal">
                     <div className="modal-content">
-                        {/* <span className="close" onClick={closeModal}>&times;</span> */}
                         <NoticeMenu />
                     </div>
                 </div>
             )}
-
-
 
 
 

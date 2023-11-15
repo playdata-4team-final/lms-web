@@ -8,7 +8,7 @@ const NoticeService = () => {
     const thirdSegment = pathSegments[3];
 
     useEffect(() => {
-        const token = { role: "PROFESSOR" }
+        const token = { role: "ADMIN" }
         setUser(token);
     }, []);
 
