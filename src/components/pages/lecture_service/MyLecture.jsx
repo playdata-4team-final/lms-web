@@ -1,14 +1,15 @@
 import React, {useState} from 'react';
+import TimeTable from "./TimeTable";
 
 
 const MyLecture = () => {
 
+
     return (
         <div>
-            <div>
-                내강의
-            </div>
+            <TimeTable></TimeTable>
         </div>
+
     );
 };
 
