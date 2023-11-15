@@ -39,6 +39,7 @@ const WatchMail = () => {
             setSelectedMails(prevSelected => prevSelected.filter(selectedMail => selectedMail.id !== mail.id));
         }
     }
+
     const handleDeleteSelectedMails = async () => {
         try {
             const response = await api('api/v1/mail/deleteMails', 'POST', { mailIds: selectedMails.map(mail => mail.id) });

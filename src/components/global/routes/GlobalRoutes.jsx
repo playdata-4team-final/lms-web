@@ -12,8 +12,11 @@ import StudentBox from "../../pages/right_box/StudentBox";
 import ProfessorBox from "../../pages/right_box/ProfessorBox";
 import ApplyLecture from "../../pages/lecture_service/ApplyLecture";
 import MyLecture from "../../pages/lecture_service/MyLecture";
-import SendLecture from "../../pages/lecture_service/SendLecture";
+import SendLecture from "../../pages/request_service/SendLecture";
 import MainLayout from "../template/MainLayout";
+import WatchNoticeDetails from "../../pages/notice__service/WatchNoticeDetails";
+import ApplyMajor from "../../pages/lecture_service/ApplyMajor";
+import TimeTable from "../../pages/lecture_service/TimeTable";
 
 // GlobalRoutes.jsx
 // ...
@@ -36,6 +39,7 @@ const GlobalRoutes = () => {
                         <Route path="notice/*">
                             <Route path="writeNotice" element={<WriteNotice />} />
                             <Route path="watchNotice" element={<WatchNotice />} />
+                            <Route path="watchNotice/details/:id" element={<WatchNoticeDetails/>}/>
                         </Route>
                     </Route>
                     <Route path="/student/*" element={<StudentBox />}>
@@ -45,7 +49,9 @@ const GlobalRoutes = () => {
                         </Route>
                         <Route path="mail/*" >
                             <Route path="writeMail" element={<WriteMail />} />
-                            <Route path="watchMail" element={<WatchMail />} />
+                            <Route path="watchMail" element={<WatchMail />} >
+                                <Route path="details/{id}" element={<WatchNoticeDetails/>}/>
+                            </Route>
                         </Route>
                         <Route path="notice/*">
                             <Route path="watchNotice" element={<WatchNotice />} />
@@ -53,16 +59,20 @@ const GlobalRoutes = () => {
                     </Route>
                     <Route path="/professor/*" element={<ProfessorBox />}>
                         <Route path="lecture/*" >
-                            <Route path="applyLecture" element={<ApplyLecture />} />
-                            <Route path="myLecture" element={<MyLecture />} />
+                            <Route path="watchMajor" element={<ApplyMajor />}/>
+                            <Route path="watchLecture" element={<ApplyLecture />} />
+                            <Route path="myLecture" element={<MyLecture />} >
+                                <Route path="table" element={<TimeTable/>}/>
+                            </Route>
                         </Route>
                         <Route path="mail/*">
                             <Route path="writeMail" element={<WriteMail />} />
                             <Route path="watchMail" element={<WatchMail />} />
                         </Route>
                         <Route path="notice/*">
-                            <Route path="writeNotice" element={<WriteNotice />} />
-                            <Route path="watchNotice" element={<WatchNotice />} />
+                            <Route path="writeNotice" element={<WriteNotice />}/>
+                            <Route path="watchNotice" element={<WatchNotice />}/>
+                            <Route path="watchNotice/details/:id" element={<WatchNoticeDetails/>}/>
                         </Route>
                     </Route>
                 </Route>

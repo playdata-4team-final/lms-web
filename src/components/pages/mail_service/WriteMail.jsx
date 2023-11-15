@@ -81,12 +81,6 @@ const WriteMail = () => {
             majorId: user.majorId
         };
 
-        const sendGroupRequest = {
-            title: formData.title,
-            senderEmail: myEmail,
-            majorId: user.majorId
-        };
-
 
         const studentResponse = await api('/api/v1/mail/sendMail', 'POST', sendRequest)
 
