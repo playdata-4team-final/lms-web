@@ -1,7 +1,8 @@
 
 import React, { useEffect, useState } from 'react';
-import { api } from "../../api/api";
+
 import "./WatchMail.css";
+import {api} from "../../global/api/Api";
 
 
 const WatchMail = () => {

@@ -1,40 +1,37 @@
 import React, {useEffect, useState} from "react";
-import {api} from "../../api/api";
 import { useNavigate } from 'react-router-dom';
+import {api} from "../../global/api/Api";
+import {useRecoilValue} from "recoil";
+import {roleSelector} from "../../global/atom/LoginAtom";
 
 
 
 const WatchNotice = () => {
-
-    const [user, setUser] = useState();
+    const role = useRecoilValue(roleSelector);
     const [notices, setNotices] = useState([]);
     const [selectedNotices, setSelectedNotices] = useState([]);
 
 
     useEffect(() => {
-        const fetchUser = async () => {
+        const fetchNotice = async () => {
             try {
-                const token = { role: 'ADMIN', email: "john.doe@example.com" };
-                setUser(token);
-
                 const response = await api('api/v1/board/getAllNotices', 'GET');
-                console.log(response.data.data);
-                setNotices(response.data.data);
+                console.log(response.data)
+                setNotices(response.data);
             } catch (error) {
-                alert('Error fetching user and notices:', error);
+                alert('Error fetching notices:', error);
             }
         };
 
-        fetchUser();
+        fetchNotice();
     }, []);
 
 
     const handleWatchNoticeDetails = async (id) => {
-        console.log(id)
+
         try {
             const response = await api(`api/v1/board/getNotice/${id}`, 'GET');
-            console.log(response.data)
-            if (response.data.errorMsg === '') {
+            if (response.errorMsg === '') {
                 alert('공지사항 호출 성공!');
             } else {
                 alert('공지사항 호출 실패:', response.statusText);
@@ -59,8 +56,7 @@ const WatchNotice = () => {
     const handleDeleteSelectedNotices = async () => {
         try {
             const response = await api('api/v1/board/deleteNotice', 'POST', { noticeIds: selectedNotices.map(notice => notice.id) });
-            console.log(response.data)
-            if (response.data.errorMsg === '') {
+            if (response.errorMsg === '') {
                 alert('공지 삭제 성공!');
             } else {
                 alert('공지 삭제 실패:', response.statusText);
@@ -72,13 +68,13 @@ const WatchNotice = () => {
 
     const navigate = useNavigate();
 
-    const handleTitleClick = async (id) => { //제목 클릭했을때, id 가져와야 하는데, 자꾸 null 가져와서 찾아오질 못함. 라우터도 설정하긴 했음.
+    const handleTitleClick = async (id) => {
         try {
-            if (user && user.role === 'ADMIN') {
+            if (role === 'ADMIN') {
                 navigate(`/admin/notice/watchNotice/details/${id}`);
-            } else if (user && user.role === 'PROFESSOR') {
+            } else if (role === 'PROFESSOR') {
                 navigate(`/professor/notice/watchNotice/details/${id}`);
-            } else if (user && user.role === 'STUDENT') {
+            } else if (role === 'STUDENT') {
                 navigate(`/student/notice/watchNotice/details/${id}`);
             }
             await handleWatchNoticeDetails(id);
@@ -90,7 +86,7 @@ const WatchNotice = () => {
 
     return (<>
             <div className={"_right-content"}>
-                {user && user.role === 'ADMIN' && (
+                {role === 'ADMIN' && (
                     <div className="admin-board">
                         <button onClick={handleDeleteSelectedNotices}>삭제</button>
                         <table>
@@ -130,7 +126,7 @@ const WatchNotice = () => {
                     </div>
                 )}
 
-                {user && (user.role === 'PROFESSOR' || user.role === 'STUDENT') && (
+                {(role === 'PROFESSOR' || role === 'STUDENT') && (
                     <div className="user-board">
                         <table>
                             <thead>
@@ -149,7 +145,7 @@ const WatchNotice = () => {
                                     <td>{notice.updateAt}</td>
                                     <td>{notice.email}</td>
                                     <td>
-                                        <div onClick={() => handleTitleClick(notice.id)}>
+                                        <div onClick={() => handleTitleClick(notice.noticeId)}>
                                             {notice.title}
                                         </div>
                                     </td>
@@ -160,7 +156,7 @@ const WatchNotice = () => {
                         </table>
                     </div>
                 )}
-                {!user && (
+                {!role && (
                     <div>유저 정보를 불러오는 중입니다...</div>
                 )}
             </div>

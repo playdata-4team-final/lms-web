@@ -15,11 +15,10 @@ import MyLecture from "../../pages/lecture_service/MyLecture";
 import SendLecture from "../../pages/request_service/SendLecture";
 import MainLayout from "../template/MainLayout";
 
-import WatchNoticeDetails from "../../pages/notice__service/WatchNoticeDetails";
-import ApplyMajor from "../../pages/lecture_service/ApplyMajor";
-import TimeTable from "../../pages/lecture_service/TimeTable";
+
 
 import GetRoleRoute from "./GetRoleRoute";
+import WatchNoticeDetails from "../../pages/notice__service/WatchNoticeDetails";
 
 
 // GlobalRoutes.jsx
@@ -43,7 +42,9 @@ const GlobalRoutes = () => {
                             </Route>
                             <Route path="notice/*">
                                 <Route path="writeNotice" element={<WriteNotice/>}/>
-                                <Route path="watchNotice" element={<WatchNotice/>}/>
+                                <Route path="watchNotice" element={<WatchNotice/>}>
+                                    <Route path="details/:id" element={<WatchNoticeDetails />}/>
+                                </Route>
                             </Route>
                         </Route>
                         <Route path="/student/*" element={<StudentBox/>}>
@@ -57,6 +58,7 @@ const GlobalRoutes = () => {
                             </Route>
                             <Route path="notice/*">
                                 <Route path="watchNotice" element={<WatchNotice/>}/>
+                                <Route path="watchNotice/details/:id" element={<WatchNoticeDetails />}/>
                             </Route>
                         </Route>
                         <Route path="/professor/*" element={<ProfessorBox/>}>
@@ -71,6 +73,9 @@ const GlobalRoutes = () => {
                             <Route path="notice/*">
                                 <Route path="writeNotice" element={<WriteNotice/>}/>
                                 <Route path="watchNotice" element={<WatchNotice/>}/>
+                                <Route path="watchNotice" element={<WatchNotice />}>
+                                    <Route path="details/:id" element={<WatchNoticeDetails />} />
+                                </Route>
                             </Route>
                         </Route>
                     </Route>

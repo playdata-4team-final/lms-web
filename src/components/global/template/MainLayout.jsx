@@ -6,22 +6,24 @@ import "../../pages/Layout/menubar/MainLayout.css";
 import ProfessorMenu from "../../pages/Layout/menubar/side_menu/ProfessorMenu";
 import StudentMenu from "../../pages/Layout/menubar/side_menu/StudentMenu";
 import {setUserStatus} from "../future/userSlice";
+import {useRecoilValue} from "recoil";
+import {roleSelector} from "../atom/LoginAtom";
 
 const MainLayout = () => {
 
-    const user = { id: 1, name: "오성", role: "PROFESSOR" }
+    const role = useRecoilValue(roleSelector);
 
     return <>
         <GlobalHeader />
         <div className={'main-box'}>
             <div className="_left-box">
-                {(user && user.role === 'ADMIN') && <div className="_button-list">
+                {(role === 'ADMIN') && <div className="_button-list">
                     <AdminMenu />
                 </div>}
-                {(user && user.role === 'PROFESSOR') && <div className="_button-list">
+                {(role === 'PROFESSOR') && <div className="_button-list">
                     <ProfessorMenu />
                 </div>}
-                {(user && user.role === 'STUDENT') && <div className="_button-list">
+                {(role === 'STUDENT') && <div className="_button-list">
                     <StudentMenu />
                 </div>}
 

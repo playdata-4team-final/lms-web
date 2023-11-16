@@ -1,35 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import {useRecoilValue} from "recoil";
+import {roleSelector} from "../../global/atom/LoginAtom";
 
 const NoticeService = () => {
-    const [user, setUser] = useState();
+    const role = useRecoilValue(roleSelector);
     const location = useLocation();
     const pathSegments = location.pathname.split('/');
     const thirdSegment = pathSegments[3];
 
-    useEffect(() => {
-        const token = { role: "ADMIN" }
-        setUser(token);
-    }, []);
-
     return (
         <div>
             <>
-                {user && user.role === 'ADMIN' && (
+                {role === 'ADMIN' && (
                     <div className="admin-notice">
                         <Link to="/admin/notice/writeNotice " className={thirdSegment === 'writeNotice' ? 'in' : ''}>공지 작성</Link><p />
                         <Link to="/admin/notice/watchNotice" className={thirdSegment === 'watchNotice' ? 'in' : ''}>공지 보기</Link>
                     </div>
                 )}
 
-                {user && user.role === 'PROFESSOR' && (
+                {role === 'PROFESSOR' && (
                     <div className="professor-notice">
                         <Link to="/professor/notice/writeNotice" className={thirdSegment === 'writeNotice' ? 'in' : ''}>공지 작성</Link><p />
                         <Link to="/professor/notice/watchNotice" className={thirdSegment === 'watchNotice' ? 'in' : ''}>공지 보기</Link>
                     </div>
                 )}
 
-                {user && user.role === 'STUDENT' && (
+                {role === 'STUDENT' && (
                     <div className="student-notice">
                         <Link to="/professor/notice/watchNotice" className={thirdSegment === 'watchNotice' ? 'in' : ''}>공지 보기</Link>
                     </div>

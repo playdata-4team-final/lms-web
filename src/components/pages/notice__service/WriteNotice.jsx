@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import {Link} from "react-router-dom";
-import {api} from "../../api/api"; // jwt-decode 라이브러리를 사용합니다.
+import {api} from "../../global/api/Api";
+import {useRecoilValue} from "recoil";
+import {roleSelector} from "../../global/atom/LoginAtom";
+import FileUpload from "./FileUpload";
+
 
 const WriteNotice = () => {
 
-    const [user, setUser] = useState({
-        id: "7d6f858a-d8bd-4074-8c6e-d9c47e21b1a6",
-        role: "ADMIN"
-    });
-
+    const role = useRecoilValue(roleSelector);
     const currentDate = new Date();
+    const [myEmail, setMyEmail] = useState(); //이거 작성자 이메일 찾아와야함.
 
     const [formData, setFormData] = useState({
         title: '',
@@ -20,19 +21,6 @@ const WriteNotice = () => {
         fileUrl: ''
     });
 
-    const [myEmail, setMyEmail] = useState();
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = "john.doe@example.com";
-                setMyEmail(data);
-            } catch (error) {
-                console.error('Error fetching email:', error);
-            }
-        };
-        fetchData();
-    }, []);
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -47,7 +35,7 @@ const WriteNotice = () => {
         e.preventDefault();
 
         const NoticeCreateRequest = {
-            adminId: user.id,
+            adminId: "",
             email: myEmail,
             title: formData.title,
             createAt: formData.upLoadTime ,
@@ -57,7 +45,6 @@ const WriteNotice = () => {
 
 
         const adminResponse = await api('/api/v1/board/createNotice', 'POST', NoticeCreateRequest)
-        console.log(adminResponse);
 
         if (adminResponse.data.errorMsg === "") {
             alert('공지 작성 성공!');
@@ -82,7 +69,7 @@ const WriteNotice = () => {
 
     return (<>
             <div>
-                {user && (user.role === 'ADMIN') && (
+                {(role === 'ADMIN') && (
                     <div className="_right-content">
                         <div>공지작성</div>
                         <form onSubmit={handleSubmit}>
@@ -121,13 +108,10 @@ const WriteNotice = () => {
                                 />
                             </div>
                             <div>
-                                <label htmlFor="file">파일 업로드:</label>
-                                <textarea
-                                    id="file"
-                                    name="file"
-                                    value={formData.fileUrl}
-                                    onChange={handleChange}
-                                />
+                                <div>파일 업로드:</div>
+                                <div>
+                                    <FileUpload noticeDetails={noticeDetails}/>
+                                </div>
                             </div>
                             <button type="submit">보내기</button>
                         </form>

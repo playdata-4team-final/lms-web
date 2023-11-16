@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import { api } from '../../api/api';
+import {api} from "../../global/api/Api";
+
 
 const ApplyMajor = () => {
     const [majorName, setMajorName] = useState('');
