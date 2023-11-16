@@ -1,5 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import { api } from '../../api/api';
+import {api} from "../../global/api/Api";
+import {useRecoilValue} from "recoil";
+import {roleSelector} from "../../global/atom/LoginAtom";
+
 
 const ApplyLecture = () => {
     const [lectureName, setLectureName] = useState('');
@@ -8,18 +11,13 @@ const ApplyLecture = () => {
     const [maximumNumber, setMaximumNumber] = useState('');
     const [lectureComment, setLectureComment] = useState('');
     const [selectedLectures, setSelectedLectures] = useState([]);
-    const [user, setUser] = useState({
-        id: "7d6f858a-d8bd-4074-8c6e-d9c47e21b1a6",
-        role: "ADMIN",
-        majorId: 3
-    });
     const [lectures, setLectures] = useState([]);
-
+    const id = useRecoilValue(idAtom);
 
     const handleCallLecture = async  () => {
 
-        const response = await api(`/api/v1/lecture/findLecture/${user.id}`, 'GET');
-        console.log(user.id)
+        const response = await api(`/api/v1/lecture/findLecture/${id}`, 'GET');
+
         try{
         if (response.data.errorMsg === '') {
             alert('강의 조회 성공!');
@@ -36,6 +34,7 @@ const ApplyLecture = () => {
     const handleDeleteSelectedLectures = async () => {
         try {
             const response = await api('api/v1/lecture/cancelLecture', 'POST', { lectureIds: selectedLectures.map(lecture => lecture.id) });
+
             console.log(response.data)
             if (response.data.errorMsg === '') {
                 alert('강의 요청 삭제 성공!');
@@ -64,8 +63,8 @@ const ApplyLecture = () => {
 
         const LectureRequest = {
             lectureName: lectureName,
-            professorId: user.id,
-            majorId: user.majorId, //전체 전공 조회에서 이름으로 고르기.
+            professorId: id,
+            majorId: "", //전체 전공 조회에서 이름으로 고르기.
             lectureComment: lectureComment,
             maximumNumber: maximumNumber,
             score: score,

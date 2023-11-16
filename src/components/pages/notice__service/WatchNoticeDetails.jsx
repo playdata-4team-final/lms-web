@@ -1,14 +1,20 @@
 
 import React, { useState, useEffect } from 'react';
 import {Link, useParams} from 'react-router-dom';
-import {api} from "../../api/api";
+import {api} from "../../global/api/Api";
+import {useRecoilValue} from "recoil";
+import {roleSelector} from "../../global/atom/LoginAtom";
+import FileUpload from "./FileUpload";
+
 
 
 const WatchNoticeDetails = () => {
+    const role = useRecoilValue(roleSelector);
     const { id } = useParams();
     const [noticeDetails, setNoticeDetails] = useState('');
     const user = {userId: "7d6f858a-d8bd-4074-8c6e-d9c47e21b1a6", userEmail:"john.doe@example.com"};
     const [comments, setComments] = useState([]);
+    const [isFileUploadVisible, setFileUploadVisible] = useState(false);
     const [formData, setFormData] = useState({
         comments: '',
         adminBoardId: ''
@@ -62,32 +68,22 @@ const WatchNoticeDetails = () => {
 
 
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const data = "john.doe@example.com";
-    //             setMyEmail(data);
-    //         } catch (error) {
-    //             console.error('Error fetching email:', error);
-    //         }
-    //     };
-    //     fetchData();
-    // }, []); 나중에 항상 토큰 정보 가져오게 끔 할거임
-
-
     useEffect(() => {
         const fetchNoticeDetails = async () => {
             try {
                 const noticeResponse = await api(`api/v1/board/getNotice/${id}`, 'GET');
-                setNoticeDetails(noticeResponse.data.data);
+                console.log(noticeResponse.data)
+                setNoticeDetails(noticeResponse.data);
                 const commentResponse = await api(`api/v1/board/getNoticeComments/${id}`, `GET`)
-                setComments(commentResponse.data.data);
+                setComments(commentResponse.data);
             } catch (error) {
                 alert('Error fetching notice details:', error);
             }
         };
 
-        fetchNoticeDetails();
+        if (!noticeDetails) {
+            fetchNoticeDetails();
+        }
     }, [id]);
 
 
@@ -95,15 +91,17 @@ const WatchNoticeDetails = () => {
 
 
     if (!noticeDetails) {
+
         return <div>Loading...</div>;
     }
 
     return (
-        <>
+        <>  {(role === "ADMIN") &&
+            <button> 삭제 </button>}
             <div>제목: {noticeDetails.title}</div>
             <div>내용: {noticeDetails.content}</div>
             <div>
-                첨부 파일: <Link to>{noticeDetails.fileUrl}</Link>
+                <FileUpload noticeDetails={noticeDetails}/>
             </div>
             <input
                 onChange={handleChange}

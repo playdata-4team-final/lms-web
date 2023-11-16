@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {api} from "../../api/api";
+
 import {useNavigate} from "react-router-dom";
+import {api} from "../../global/api/Api";
 
 const ExampleTimetable = () => {
 
@@ -28,6 +29,7 @@ const ExampleTimetable = () => {
 const Timetable = ({ weeklyData }) => {
 
     const [user, setUser] = useState();
+    const [notices, setNotices] = useState();
 
 
     useEffect(() => {

@@ -44,7 +44,7 @@ const handle401Error = (error) => {
     if (error.response.data === "Unauthorized: Expired JWT token") {
         window.location.href = '/reissue';
     } else {
-        window.location.href = '/login';
+        window.location.href = '/';
     }
 };
 

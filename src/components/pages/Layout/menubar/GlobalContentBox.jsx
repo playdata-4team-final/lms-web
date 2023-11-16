@@ -2,25 +2,27 @@ import React from 'react';
 import AdminBox from "../../right_box/AdminBox";
 import StudentBox from "../../right_box/StudentBox";
 import ProfessorBox from "../../right_box/ProfessorBox";
+import {useRecoilValue} from "recoil";
+import {roleSelector} from "../../../global/atom/LoginAtom";
 
 const GlobalContentBox = () => {
 
-    const user = { id: 1, name: "오성", role: "ADMIN" };
+    const role = useRecoilValue(roleSelector);
 
     return (
         <>
             <div className="main_sidebar">
-                {user && user.role === 'ADMIN' && (
+                {role === 'ADMIN' && (
                     <div className="_sidebar">
                         <AdminBox />
                     </div>
                 )}
-                {user && user.role === 'STUDENT' && (
+                {role === 'STUDENT' && (
                     <div className="_sidebar">
                         <StudentBox />
                     </div>
                 )}
-                {user && user.role === 'PROFESSOR' && (
+                {role === 'PROFESSOR' && (
                     <div className="_sidebar">
                         <ProfessorBox />
                     </div>
