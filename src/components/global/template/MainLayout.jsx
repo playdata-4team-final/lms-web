@@ -9,7 +9,7 @@ import {setUserStatus} from "../future/userSlice";
 
 const MainLayout = () => {
 
-    const user = { id: 1, name: "오성", role: "PROFESSOR" }
+    const user = { id: 1, name: "오성", role: "STUDENT" }
 
     return <>
         <GlobalHeader />

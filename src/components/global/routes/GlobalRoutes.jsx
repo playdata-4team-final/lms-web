@@ -15,6 +15,8 @@ import MyLecture from "../../pages/lecture_service/MyLecture";
 import SendLecture from "../../pages/lecture_service/SendLecture";
 import MainLayout from "../template/MainLayout";
 import GetRoleRoute from "./GetRoleRoute";
+import GetStudentGrade from "../../pages/grade_service/GetStudentGrade";
+import GetProfessorGrade from "../../pages/grade_service/GetProfessorGrade";
 
 // GlobalRoutes.jsx
 // ...
@@ -23,9 +25,11 @@ const GlobalRoutes = () => {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Login/>}/>
+                {/*<Route path="/reissue" element={<Login/>}/>*/}
                 <Route element={<GetRoleRoute/>}>
                     <Route element={<MainLayout/>}>
                         <Route path="/main" element={<Home/>}/>
+
                         <Route path="/admin/*" element={<AdminBox/>}>
                             <Route path="accept/*">
                                 <Route path="acceptMajor" element={<AcceptMajor/>}/>
@@ -52,6 +56,9 @@ const GlobalRoutes = () => {
                             <Route path="notice/*">
                                 <Route path="watchNotice" element={<WatchNotice/>}/>
                             </Route>
+                            <Route path="grade/*">
+                                <Route path="get" element={<GetStudentGrade/>}/>
+                            </Route>
                         </Route>
                         <Route path="/professor/*" element={<ProfessorBox/>}>
                             <Route path="lecture/*">
@@ -65,6 +72,9 @@ const GlobalRoutes = () => {
                             <Route path="notice/*">
                                 <Route path="writeNotice" element={<WriteNotice/>}/>
                                 <Route path="watchNotice" element={<WatchNotice/>}/>
+                            </Route>
+                            <Route path="grade/*">
+                                <Route path="get" element={<GetProfessorGrade/>}/>
                             </Route>
                         </Route>
                     </Route>

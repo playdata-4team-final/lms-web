@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import MailMenu from './in_menu/MailMenu'; // MailMenu 컴포넌트 import
 import NoticeMenu from "./in_menu/NoticeMenu";
-import LectureMenu from "./in_menu/LectureMenu"; // AcceptMenu 컴포넌트 import
+import LectureMenu from "./in_menu/LectureMenu";
+import GradeMenu from "./in_menu/GradeMenu"; // AcceptMenu 컴포넌트 import
 
 const StudentMenu = () => {
     const [selectedMenu, setSelectedMenu] = useState(null);
@@ -30,6 +31,15 @@ const StudentMenu = () => {
                     <div className="modal-content">
                         {/* <span className="close" onClick={closeModal}>&times;</span> */}
                         <LectureMenu />
+                    </div>
+                </div>
+            )}
+            <div onClick={() => openModal('grade')}>성적 서비스</div>
+            {selectedMenu === 'grade' && (
+                <div className="modal">
+                    <div className="modal-content">
+                        {/* <span className="close" onClick={closeModal}>&times;</span> */}
+                        <GradeMenu />
                     </div>
                 </div>
             )}
