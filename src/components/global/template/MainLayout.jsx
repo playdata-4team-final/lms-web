@@ -5,37 +5,36 @@ import AdminMenu from "../../pages/Layout/menubar/side_menu/AdminMenu";
 import "../../pages/Layout/menubar/MainLayout.css";
 import ProfessorMenu from "../../pages/Layout/menubar/side_menu/ProfessorMenu";
 import StudentMenu from "../../pages/Layout/menubar/side_menu/StudentMenu";
-import {setUserStatus} from "../future/userSlice";
-import {useRecoilValue} from "recoil";
-import {roleAtom} from "../atom/LoginAtom";
-
+import { setUserStatus } from "../future/userSlice";
+import Cursor from "../../atoms/Cursor";
 
 const MainLayout = () => {
+  const user = { id: 1, name: "오성", role: "PROFESSOR" };
 
-    const role = useRecoilValue(roleAtom);
-
-    return <>
-        <GlobalHeader />
-        <div className={'main-box'}>
-            <div className="_left-box">
-                {(role === 'ADMIN') && <div className="_button-list">
+  return (
+    <>
+      <Cursor />
+      <GlobalHeader />
+      <div className={"main-box"}>
+        {/* <div className="_left-box">
+                {(user && user.role === 'ADMIN') && <div className="_button-list">
                     <AdminMenu />
                 </div>}
-                {(role === 'PROFESSOR') && <div className="_button-list">
+                {(user && user.role === 'PROFESSOR') && <div className="_button-list">
                     <ProfessorMenu />
                 </div>}
-                {(role === 'STUDENT') && <div className="_button-list">
+                {(user && user.role === 'STUDENT') && <div className="_button-list">
                     <StudentMenu />
                 </div>}
 
-            </div>
-            <div className="_right-box">
-                <GlobalContentBox/>
-            </div>
-            <GlobalFooter />
+            </div> */}
+        <div className="_right-box">
+          <GlobalContentBox />
         </div>
-
+        <GlobalFooter />
+      </div>
     </>
-}
+  );
+};
 
-export default MainLayout
+export default MainLayout;
