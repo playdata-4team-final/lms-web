@@ -3,11 +3,11 @@ import AdminBox from "../../right_box/AdminBox";
 import StudentBox from "../../right_box/StudentBox";
 import ProfessorBox from "../../right_box/ProfessorBox";
 import {useRecoilValue} from "recoil";
-import {roleSelector} from "../../../global/atom/LoginAtom";
+import {roleAtom} from "../../../global/atom/LoginAtom";
 
 const GlobalContentBox = () => {
 
-    const role = useRecoilValue(roleSelector);
+    const role = useRecoilValue(roleAtom);
 
     return (
         <>

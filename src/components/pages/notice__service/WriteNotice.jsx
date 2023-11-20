@@ -1,26 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import {Link} from "react-router-dom";
 import {api} from "../../global/api/Api";
 import {useRecoilValue} from "recoil";
-import {roleSelector} from "../../global/atom/LoginAtom";
+
 import FileUpload from "./FileUpload";
+import {idAtom, roleAtom} from "../../global/atom/LoginAtom";
 
 
 const WriteNotice = () => {
 
-    const role = useRecoilValue(roleSelector);
+    const [files, setFiles] = useState([]);
+    const role = useRecoilValue(roleAtom);
     const currentDate = new Date();
-    const [myEmail, setMyEmail] = useState(); //이거 작성자 이메일 찾아와야함.
-
-    const [formData, setFormData] = useState({
+    const initialFormData = {
         title: '',
-        updateTime: '',
-        upLoadTime: '',
+        upLoadTime: currentDate,
         email: '',
         content: '',
-        fileUrl: ''
-    });
+    };
 
+    const id = useRecoilValue(idAtom);
+
+    const [formData, setFormData] = useState(initialFormData);
+
+    const handleChange1 = (e) => {
+        console.log(e)
+
+        const {id, value} = e.target;
+        setFormData({
+            ...formData,
+            [id]: value
+        });
+    };
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -35,35 +45,29 @@ const WriteNotice = () => {
         e.preventDefault();
 
         const NoticeCreateRequest = {
-            adminId: "",
-            email: myEmail,
+            adminId: id,
+            email: formData.email,
             title: formData.title,
             createAt: formData.upLoadTime ,
             content: formData.content,
-            fileUrl: formData.fileUrl
+            noticeFiles:files
         };
 
 
         const adminResponse = await api('/api/v1/board/createNotice', 'POST', NoticeCreateRequest)
-
-        if (adminResponse.data.errorMsg === "") {
+        console.log(NoticeCreateRequest)
+        console.log(adminResponse)
+        if (adminResponse.errorMsg === "") {
             alert('공지 작성 성공!');
             setFormData({
                 title: '',
                 email: '',
                 content: '',
-                majorId: ''
+                noticeFiles:[]
             });
         } else {
             alert('공지 작성 실패!');
-            setFormData({
-                title: '',
-                email: '',
-                content: '',
-                majorId: ''
-            });
         }
-
 
     }
 
@@ -90,12 +94,13 @@ const WriteNotice = () => {
                                 value={formData.upLoadTime = currentDate} readOnly={true}
                             />
                             <div>
-                                <label htmlFor="notice">작성자 이메일:</label>
+                                <label htmlFor="email">작성자 이메일:</label>
                                 <input
-                                    id="notice"
-                                    name="notice"
-                                    value={myEmail}
-                                    readOnly={true}
+                                    type="text"
+                                    id="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
                                 />
                             </div>
                             <div>
@@ -104,16 +109,16 @@ const WriteNotice = () => {
                                     id="content"
                                     name="content"
                                     value={formData.content}
-                                    onChange={handleChange}
+                                    onChange={handleChange1}
                                 />
                             </div>
                             <div>
                                 <div>파일 업로드:</div>
                                 <div>
-                                    <FileUpload noticeDetails={noticeDetails}/>
+                                    <FileUpload setFiles={setFiles} files={files}/>
                                 </div>
                             </div>
-                            <button type="submit">보내기</button>
+                            <button type="submit" >보내기</button>
                         </form>
                     </div>
                 )}

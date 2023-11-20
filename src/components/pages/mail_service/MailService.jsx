@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {useRecoilValue} from "recoil";
-import {roleSelector} from "../../global/atom/LoginAtom";
+import {roleAtom} from "../../global/atom/LoginAtom";
 
 
 const MailService = () => {
 
-    const role = useRecoilValue(roleSelector);
+    const role = useRecoilValue(roleAtom);
     const location = useLocation();
     const pathSegments = location.pathname.split('/');
     const thirdSegment = pathSegments[3];
@@ -25,8 +25,8 @@ const MailService = () => {
 
                 {role === 'ADMIN' && (
                     <div className="admin-mail">
-                        <Link to="/student/mail/writeMail" className={thirdSegment === 'writeMail' ? 'in' : ''}>메일 작성</Link><p />
-                        <Link to="/student/mail/watchMail " className={thirdSegment === 'watchMail' ? 'in' : ''}>메일 보기</Link>
+                        <Link to="/admin/mail/writeMail" className={thirdSegment === 'writeMail' ? 'in' : ''}>메일 작성</Link><p />
+                        <Link to="/admin/mail/watchMail " className={thirdSegment === 'watchMail' ? 'in' : ''}>메일 보기</Link>
                     </div>
                 )}
 

@@ -3,24 +3,50 @@ import React, { useState, useEffect } from 'react';
 import {Link, useParams} from 'react-router-dom';
 import {api} from "../../global/api/Api";
 import {useRecoilValue} from "recoil";
-import {roleSelector} from "../../global/atom/LoginAtom";
+import {idAtom, roleAtom} from "../../global/atom/LoginAtom";
 import FileUpload from "./FileUpload";
 
 
 
 const WatchNoticeDetails = () => {
-    const role = useRecoilValue(roleSelector);
+    const [files, setFiles] = useState([]);
+    const role = useRecoilValue(roleAtom);
     const { id } = useParams();
     const [noticeDetails, setNoticeDetails] = useState('');
-    const user = {userId: "7d6f858a-d8bd-4074-8c6e-d9c47e21b1a6", userEmail:"john.doe@example.com"};
     const [comments, setComments] = useState([]);
-    const [isFileUploadVisible, setFileUploadVisible] = useState(false);
+
     const [formData, setFormData] = useState({
         comments: '',
-        adminBoardId: ''
-
+        adminBoardId: '',
+        email: ''
     });
-    
+
+    const [formData2, setFormData2] = useState({
+        comments: '',
+        adminBoardId: '',
+        userEmail: '',
+        commentId: ''
+    });
+
+    const [replyText, setReplyText] = useState();
+
+
+
+    const [selectedCommentId, setSelectedCommentId] = useState();
+    const userId = useRecoilValue(idAtom);
+
+    const [response, setResponse] = useState();
+
+    const handleReply = (commentId) => {
+        setSelectedCommentId(commentId);
+    };
+
+    const handleCancelReply = () => {
+        setFormData2(prevent =>({...prevent, comments: ""} ))
+    };
+
+
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -30,12 +56,21 @@ const WatchNoticeDetails = () => {
         });
     };
 
+    const handleChange2 = (e) => {
+        const { name, value } = e.target;
+        setFormData2({
+            ...formData2,
+            [name]: value
+        });
+    };
+
     const handleCommentSubmit = async () => {
         try {
             const NoticeCommentRequest = {
-                userId: user.userId,
-                Email: user.userEmail,
-                comment: formData.comments,
+                userId: userId,
+                email: "111@1111",
+                commentId: formData2.commentId,
+                comments: formData.comments,
                 adminBoardId: id
             };
             await api('/api/v1/board/writeNoticeComments', 'POST', NoticeCommentRequest);
@@ -47,8 +82,8 @@ const WatchNoticeDetails = () => {
     const handleDeleteComment = async (comentId) => {
         try {
             const NoticeCommentDeleteRequest = {
-                id: comentId,
-                userId: user.userId
+                commentId: comentId,
+                userId: id
             };
 
             // id로 유저 정보 찾아오기
@@ -66,16 +101,52 @@ const WatchNoticeDetails = () => {
         }
     };
 
-
+    const handlePostReply = async () => {
+        try {
+            const NoticeReplyCommentRequest = {
+                userId: userId,
+                email: "111@1111",
+                comments: formData2.comments,
+                adminBoardId: id,
+                commentId: selectedCommentId
+            };
+            await api('/api/v1/board/writeNoticeReplyComments', 'POST', NoticeReplyCommentRequest);
+            setResponse(response.data);
+            console.log(response)
+        } catch (error) {
+            console.error('Error submitting reply:', error);
+        }
+    };
 
     useEffect(() => {
         const fetchNoticeDetails = async () => {
+
             try {
+                const NoticeReplyCommentRequest = {
+                    userId: userId,
+                    userEmail: "111@1111",
+                    comments: formData2.comment ,
+                    adminBoardId: id,
+                    commentId: selectedCommentId
+                };
+
+                const NoticeFileRequest = {
+                    adminId: userId,
+                   adminBoardId: id,
+                };
+
                 const noticeResponse = await api(`api/v1/board/getNotice/${id}`, 'GET');
                 console.log(noticeResponse.data)
                 setNoticeDetails(noticeResponse.data);
+                console.log(noticeDetails);
                 const commentResponse = await api(`api/v1/board/getNoticeComments/${id}`, `GET`)
+                console.log(commentResponse)
                 setComments(commentResponse.data);
+                const fileResponse = await api(`api/v1/board/getNoticeFile` ,`POST`, NoticeFileRequest )
+                setFiles(fileResponse.data);
+                const replyResponse = await api(`api/v1/board/getNoticeReplyComments`,`POST`, NoticeReplyCommentRequest)
+                setReplyText(replyResponse.data)
+                console.log(replyText)
             } catch (error) {
                 alert('Error fetching notice details:', error);
             }
@@ -85,6 +156,8 @@ const WatchNoticeDetails = () => {
             fetchNoticeDetails();
         }
     }, [id]);
+
+
 
 
 
@@ -101,25 +174,52 @@ const WatchNoticeDetails = () => {
             <div>제목: {noticeDetails.title}</div>
             <div>내용: {noticeDetails.content}</div>
             <div>
-                <FileUpload noticeDetails={noticeDetails}/>
+                <FileUpload noticeDetails={noticeDetails} files={files} setFiles={setFiles}/>
             </div>
             <input
                 onChange={handleChange}
                 id="comments"
                 name="comments"
-                value={formData.comment}
+                placeholder={"댓글을 입력하세요"}
+                value={formData.comments}
             />
             <button onClick={handleCommentSubmit}>입력</button>
-            <h2>댓글</h2>
-            {comments.map(comment => (
+            <div>댓글</div>
+            {comments && comments.length > 0 && comments.map(comment => (
                 <div key={comment.id} className="comment">
                     <div className="user-email">{comment.userEmail}</div>
                     <div className="comment-text">{comment.comments}</div>
                     <div className="create-date">{comment.createAt}</div>
-                    <div className="create-date">{comment.updateAt}</div>
-                    <button>↳</button>
-
+                    <button onClick={() => handleReply(comment.id)}>↳ 대댓글 작성</button>
                     <button onClick={() => handleDeleteComment(comment.id)}>삭제</button>
+
+                    {selectedCommentId === comment.id && (
+                        <div>
+                            <input
+                                onChange={handleChange2}
+                                id="reply"
+                                name="comments"
+                                placeholder={"대댓글을 입력하세요"}
+                                value={formData2.comments}
+                            />
+                            <button onClick={handlePostReply}>확인</button>
+                            <button onClick={handleCancelReply}>취소</button>
+                        </div>
+                    )}
+
+                    {/* 대댓글 목록 */}
+                    {replyText && replyText.length > 0 && (
+                        <div className="reply-list">
+                            {Array.isArray(replyText) && replyText.map(reply => (
+                                <div key={reply.id} className="reply">
+                                    <div className="user-email">{reply.userEmail}</div>
+                                    <div className="comment-text">{reply.comments}</div>
+                                    <div className="create-date">{reply.createAt}</div>
+                                    <button onClick={() => handleDeleteComment(reply.id)}>삭제</button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             ))}
         </>

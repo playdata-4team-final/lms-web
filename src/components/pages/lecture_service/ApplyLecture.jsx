@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {api} from "../../global/api/Api";
 import {useRecoilValue} from "recoil";
-import {roleSelector} from "../../global/atom/LoginAtom";
+import {idAtom} from "../../global/atom/LoginAtom";
 
 
 const ApplyLecture = () => {
@@ -103,7 +103,7 @@ const ApplyLecture = () => {
                 <input
                     type="text"
                     id="professorId"
-                    value={user.id}
+                    value={id}
                     readOnly={true}
                 />
             </div>
@@ -112,7 +112,7 @@ const ApplyLecture = () => {
                 <input
                     type="text"
                     id="majorId"
-                    value={user.majorId} //전체 전공에서 조회해오는 api로 요청할거임.
+                    value={""} //전체 전공에서 조회해오는 api로 요청할거임.
                 />
             </div>
             <div>

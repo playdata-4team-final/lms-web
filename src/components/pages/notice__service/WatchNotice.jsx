@@ -2,14 +2,16 @@ import React, {useEffect, useState} from "react";
 import { useNavigate } from 'react-router-dom';
 import {api} from "../../global/api/Api";
 import {useRecoilValue} from "recoil";
-import {roleSelector} from "../../global/atom/LoginAtom";
+import {roleAtom} from "../../global/atom/LoginAtom";
+
 
 
 
 const WatchNotice = () => {
-    const role = useRecoilValue(roleSelector);
+    const role = useRecoilValue(roleAtom);
     const [notices, setNotices] = useState([]);
     const [selectedNotices, setSelectedNotices] = useState([]);
+
 
 
     useEffect(() => {
@@ -18,6 +20,7 @@ const WatchNotice = () => {
                 const response = await api('api/v1/board/getAllNotices', 'GET');
                 console.log(response.data)
                 setNotices(response.data);
+                console.log(notices)
             } catch (error) {
                 alert('Error fetching notices:', error);
             }
@@ -46,7 +49,7 @@ const WatchNotice = () => {
             setSelectedNotices(prevSelected => [...prevSelected, notice]);
             console.log(selectedNotices)
         } else {
-            setSelectedNotices(prevSelected => prevSelected.filter(selectedNotice => selectedNotice.id !== notice.id));
+            setSelectedNotices(prevSelected => prevSelected.filter(selectedNotice => selectedNotice.adminBoardId !== notice.adminBoardId));
             console.log(selectedNotices)
         }
     }
@@ -55,7 +58,7 @@ const WatchNotice = () => {
 
     const handleDeleteSelectedNotices = async () => {
         try {
-            const response = await api('api/v1/board/deleteNotice', 'POST', { noticeIds: selectedNotices.map(notice => notice.id) });
+            const response = await api('api/v1/board/deleteNotice', 'POST', {adminBoardIds: selectedNotices.map(notice => notice.adminBoardId) });
             if (response.errorMsg === '') {
                 alert('공지 삭제 성공!');
             } else {
@@ -88,7 +91,6 @@ const WatchNotice = () => {
             <div className={"_right-content"}>
                 {role === 'ADMIN' && (
                     <div className="admin-board">
-                        <button onClick={handleDeleteSelectedNotices}>삭제</button>
                         <table>
                             <thead>
                             <tr>
@@ -102,12 +104,12 @@ const WatchNotice = () => {
                             </thead>
                             <tbody>
                             {notices.map(notice => (
-                                <tr key={notice.noticeId}>
+                                <tr key={notice.adminBoardId}>
                                     <td>{notice.createAt}</td>
                                     <td>{notice.updateAt}</td>
                                     <td>{notice.email}</td>
                                     <td>
-                                        <button onClick={() => handleTitleClick(notice.noticeId)}>
+                                        <button onClick={() => handleTitleClick(notice.id)}>
                                             {notice.title}
                                         </button>
                                     </td>
@@ -116,13 +118,14 @@ const WatchNotice = () => {
                                         <input
                                             type="checkbox"
                                             onChange={(event) => handleCheckboxChange(event, notice)}
-                                            checked={selectedNotices.some(selectedNotice => selectedNotice.id === notice.id)}
+                                            checked={selectedNotices.some(selectedNotice => selectedNotice.adminBoardId === notice.adminBoardId)}
                                         />
                                     </td>
                                 </tr>
                                 ))}
                             </tbody>
                         </table>
+                        <button onClick={handleDeleteSelectedNotices}>삭제</button>
                     </div>
                 )}
 

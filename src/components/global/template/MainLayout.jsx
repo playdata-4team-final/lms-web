@@ -7,11 +7,12 @@ import ProfessorMenu from "../../pages/Layout/menubar/side_menu/ProfessorMenu";
 import StudentMenu from "../../pages/Layout/menubar/side_menu/StudentMenu";
 import {setUserStatus} from "../future/userSlice";
 import {useRecoilValue} from "recoil";
-import {roleSelector} from "../atom/LoginAtom";
+import {roleAtom} from "../atom/LoginAtom";
+
 
 const MainLayout = () => {
 
-    const role = useRecoilValue(roleSelector);
+    const role = useRecoilValue(roleAtom);
 
     return <>
         <GlobalHeader />

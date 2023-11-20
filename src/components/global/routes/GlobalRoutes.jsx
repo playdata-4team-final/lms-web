@@ -42,9 +42,8 @@ const GlobalRoutes = () => {
                             </Route>
                             <Route path="notice/*">
                                 <Route path="writeNotice" element={<WriteNotice/>}/>
-                                <Route path="watchNotice" element={<WatchNotice/>}>
-                                    <Route path="details/:id" element={<WatchNoticeDetails />}/>
-                                </Route>
+                                <Route path="watchNotice" element={<WatchNotice/>}/>
+                                <Route path="watchNotice/details/:id" element={<WatchNoticeDetails />} />
                             </Route>
                         </Route>
                         <Route path="/student/*" element={<StudentBox/>}>
@@ -73,9 +72,8 @@ const GlobalRoutes = () => {
                             <Route path="notice/*">
                                 <Route path="writeNotice" element={<WriteNotice/>}/>
                                 <Route path="watchNotice" element={<WatchNotice/>}/>
-                                <Route path="watchNotice" element={<WatchNotice />}>
-                                    <Route path="details/:id" element={<WatchNoticeDetails />} />
-                                </Route>
+                                <Route path="watchNotice" element={<WatchNotice />}/>
+                                <Route path="watchNotice/details/:id" element={<WatchNoticeDetails />} />
                             </Route>
                         </Route>
                     </Route>

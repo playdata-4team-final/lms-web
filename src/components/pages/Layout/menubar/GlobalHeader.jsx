@@ -7,10 +7,13 @@
 import {useState} from "react";
 import {Link} from "react-router-dom";
 import "../../Layout/menubar/GlobalHedaer.css"
+import {useRecoilValue} from "recoil";
+import {idAtom, roleAtom} from "../../../global/atom/LoginAtom";
 
 const GlobalHeader = () => {
 
-    const user = { id: 1, name: "오성", role: "ADMIN" }
+    const role = useRecoilValue(roleAtom)
+    const id = useRecoilValue(idAtom)
 
     return<div>
     <div className={`main_header`}>
@@ -29,9 +32,9 @@ const GlobalHeader = () => {
                         <Link to="/" className="logout">로그아웃</Link>
                     </div>
                     <div />
-                    {(user && user.role === 'ADMIN') && <Link to = "admin/mail/watchMail">✉️내 쪽지</Link>}
-                    {(user && user.role === 'STUDENT') && <Link to = "student/mail/watchMail">✉️내 쪽지</Link>}
-                    {(user && user.role === 'PROFESSOR') && <Link to = "professor/mail/watchMail">✉️내 쪽지</Link>}
+                    {(role === 'ADMIN') && <Link to = "admin/mail/watchMail">✉️내 쪽지</Link>}
+                    {(role === 'STUDENT') && <Link to = "student/mail/watchMail">✉️내 쪽지</Link>}
+                    {(role === 'PROFESSOR') && <Link to = "professor/mail/watchMail">✉️내 쪽지</Link>}
                     </div>
                 </div>
     </div>

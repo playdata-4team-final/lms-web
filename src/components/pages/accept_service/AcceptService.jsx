@@ -1,11 +1,11 @@
 import {Link, useLocation} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import {useRecoilValue} from "recoil";
-import {roleSelector} from "../../global/atom/LoginAtom";
+import {roleAtom} from "../../global/atom/LoginAtom";
 
 const AcceptService = () => {
 
-    const role = useRecoilValue(roleSelector);
+    const role = useRecoilValue(roleAtom);
     const location = useLocation();
     const pathSegments = location.pathname.split('/');
     const thirdSegment = pathSegments[3];
