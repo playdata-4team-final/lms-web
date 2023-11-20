@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import ServiceBtn from "../../atoms/ServiceBtn";
 
 const Container = styled.div`
   display: flex;
@@ -63,7 +64,7 @@ const CoverTextu = styled.div`
     padding-top: 2vh;
   }
 `;
-const CoverButton = styled.div`
+const CoverButton = styled.button`
   --hover-background: #ffcc00;
   --hover-text: #000000;
   --hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);

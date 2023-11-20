@@ -1,11 +1,6 @@
 import React, { useState } from "react";
-import MailMenu from "./in_menu/MailMenu";
-import AcceptMenu from "./in_menu/AcceptMenu";
-import NoticeMenu from "./in_menu/NoticeMenu";
 import styled, { keyframes } from "styled-components";
-import { Link } from "react-router-dom";
-import MyPage from "../../../my/MyPage";
-
+import { useNavigate } from "react-router-dom";
 const Nav = styled.ul`
   display: flex;
   justify-content: flex-end;
@@ -30,6 +25,23 @@ const bounce = keyframes`
   }
   75% {
     transform: translateY(10px);
+  }
+`;
+const Dropdown = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+const DropdownContent = styled.div`
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+
+  ${Dropdown}:hover & {
+    display: block;
   }
 `;
 
@@ -84,42 +96,131 @@ const StyledList = styled.li`
 `;
 
 const AdminMenu = () => {
+  const navigate = useNavigate();
+
+  const [isLectureDropdownOpen, setIsLectureDropdownOpen] = useState(false);
+  const [isMailDropdownOpen, setIsMailDropdownOpen] = useState(false);
+  const [isNoticeDropdownOpen, setIsNoticeDropdownOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState(null);
 
-  const openModal = (menu) => {
-    if (menu === selectedMenu) setSelectedMenu(null);
-    else setSelectedMenu(menu);
+  const toggleLectureDropdown = () => {
+    setIsLectureDropdownOpen(!isLectureDropdownOpen);
+    setIsMailDropdownOpen(false);
+    setIsNoticeDropdownOpen(false);
+    setSelectedMenu(null);
+  };
+
+  // handleMailItemClick and handleLectureItemClick functions remain the same
+
+  const toggleMailDropdown = () => {
+    setIsMailDropdownOpen(!isMailDropdownOpen);
+    setIsLectureDropdownOpen(false);
+    setIsNoticeDropdownOpen(false);
+    setSelectedMenu(null);
+  };
+
+  const toggleNoticeDropdown = () => {
+    setIsNoticeDropdownOpen(!isNoticeDropdownOpen);
+    setIsLectureDropdownOpen(false);
+    setIsMailDropdownOpen(false);
+    setSelectedMenu(null);
+  };
+  const handleMailItemClick = (mailType) => {
+    switch (mailType) {
+      case "writeMail":
+        navigate("/admin/mail/writeMail");
+        break;
+      case "watchMail":
+        navigate("/admin/mail/watchMail");
+        break;
+
+      default:
+        break;
+    }
+  };
+  const handleLectureItemClick = (acceptType) => {
+    switch (acceptType) {
+      case "acceptMajor":
+        navigate("/admin/accept/acceptMajor");
+        break;
+      case "acceptLecture":
+        navigate("/admin/accept/acceptLecture");
+        break;
+      case "myLecture":
+        navigate("/admin/lecture/myLecture");
+        break;
+
+      default:
+        break;
+    }
+  };
+  const handleNoticeItemClick = (noticeType) => {
+    switch (noticeType) {
+      case "writeNotice":
+        navigate("/admin/notice/writeNotice");
+        break;
+      case "watchNotice":
+        navigate("/admin/notice/watchNotice");
+        break;
+      default:
+        break;
+    }
   };
 
   return (
     <Nav>
-      <StyledList onClick={() => openModal("mail")}>메일 서비스</StyledList>
-      {selectedMenu === "mail" && (
-        <div className="modal">
-          <div className="modal-content">
-            {/* <span className="close" onClick={closeModal}>&times;</span> */}
-            <MailMenu />
-          </div>
-        </div>
-      )}
-      <StyledList onClick={() => openModal("accept")}>관리 서비스</StyledList>
-      {selectedMenu === "accept" && (
-        <div className="modal">
-          <div className="modal-content">
-            {/* <span className="close" onClick={closeModal}>&times;</span> */}
-            <AcceptMenu />
-          </div>
-        </div>
-      )}
-      <StyledList onClick={() => openModal("notice")}>공지사항</StyledList>
-      {selectedMenu === "notice" && (
-        <div className="modal">
-          <div className="modal-content">
-            {/* <span className="close" onClick={closeModal}>&times;</span> */}
-            <NoticeMenu />
-          </div>
-        </div>
-      )}
+      <Dropdown
+        onMouseEnter={toggleMailDropdown}
+        onMouseLeave={() => setIsMailDropdownOpen(false)}
+      >
+        <StyledList>메일 서비스</StyledList>
+        {isMailDropdownOpen && (
+          <DropdownContent>
+            <StyledList onClick={() => handleMailItemClick("writeMail")}>
+              메일 작성
+            </StyledList>
+            <StyledList onClick={() => handleMailItemClick("watchMail")}>
+              메일 보기
+            </StyledList>
+          </DropdownContent>
+        )}
+      </Dropdown>
+      <Dropdown
+        onMouseEnter={toggleNoticeDropdown}
+        onMouseLeave={() => setIsNoticeDropdownOpen(false)}
+      >
+        <StyledList onClick={() => setIsNoticeDropdownOpen(true)}>
+          강의서비스
+        </StyledList>
+        {isNoticeDropdownOpen && (
+          <DropdownContent>
+            <StyledList onClick={() => handleLectureItemClick("acceptMajor")}>
+              전공 허가
+            </StyledList>
+            <StyledList onClick={() => handleLectureItemClick("acceptLecture")}>
+              강의 허가
+            </StyledList>
+          </DropdownContent>
+        )}
+      </Dropdown>
+      <Dropdown
+        onMouseEnter={toggleNoticeDropdown}
+        onMouseLeave={() => setIsNoticeDropdownOpen(false)}
+      >
+        <StyledList onClick={() => setIsNoticeDropdownOpen(true)}>
+          공지사항
+        </StyledList>
+        {isNoticeDropdownOpen && (
+          <DropdownContent>
+            <StyledList onClick={() => handleNoticeItemClick("watchNotice")}>
+              공지 작성
+            </StyledList>
+            <StyledList onClick={() => handleNoticeItemClick("watchNotice")}>
+              공지 보기
+            </StyledList>
+          </DropdownContent>
+        )}
+      </Dropdown>
     </Nav>
   );
 };

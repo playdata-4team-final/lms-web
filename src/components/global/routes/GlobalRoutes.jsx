@@ -12,7 +12,7 @@ import StudentBox from "../../pages/right_box/StudentBox";
 import ProfessorBox from "../../pages/right_box/ProfessorBox";
 import ApplyLecture from "../../pages/lecture_service/ApplyLecture";
 import MyLecture from "../../pages/lecture_service/MyLecture";
-import SendLecture from "../../pages/lecture_service/SendLecture";
+import SendLecture from "../../pages/request_service/SendLecture";
 import MainLayout from "../template/MainLayout";
 import GetRoleRoute from "./GetRoleRoute";
 import MyPage from "../../pages/my/MyPage";
@@ -41,7 +41,7 @@ const GlobalRoutes = () => {
               </Route>
             </Route>
             <Route path="/student/*" element={<StudentBox />}>
-              <Route path="mypage" element={<MyPage />} />
+              <Route path="mypage/*" element={<MyPage />} />
               <Route path="lecture/*">
                 <Route path="sendLecture" element={<SendLecture />} />
                 <Route path="myLecture" element={<MyLecture />} />
