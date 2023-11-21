@@ -21,6 +21,7 @@
 .first_menu {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .user-image {
@@ -35,6 +36,11 @@
   font-size: 16px;
   font-weight: bold;
   margin-right: 10px;
+}
+.mail-btn {
+  margin-bottom: 18px;
+  margin-left: 10px;
+  font-weight: bold;
 }
 
 .logout {
