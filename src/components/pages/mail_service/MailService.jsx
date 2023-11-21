@@ -1,38 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import {useRecoilValue} from "recoil";
+import {roleAtom} from "../../global/atom/LoginAtom";
 
 
 const MailService = () => {
 
-    const [user, setUser] = useState();
+    const role = useRecoilValue(roleAtom);
     const location = useLocation();
     const pathSegments = location.pathname.split('/');
     const thirdSegment = pathSegments[3];
 
-    useEffect(() => {
-        const token = { role: "PROFESSOR" }
-        setUser(token);
-    }, []);
 
     return (
         <div>
 
             <>
-                {user && user.role === 'STUDENT' && (
+                {role === 'STUDENT' && (
                     <div className="student-mail">
                         <Link to="/student/mail/writeMail" className={thirdSegment === 'writeMail' ? 'in' : ''}>메일 작성</Link><p />
                         <Link to="/student/mail/watchMail" className={thirdSegment === 'watchMail' ? 'in' : ''}>메일 보기</Link>
                     </div>
                 )}
 
-                {user && user.role === 'ADMIN' && (
+                {role === 'ADMIN' && (
                     <div className="admin-mail">
-                        <Link to="/student/mail/writeMail" className={thirdSegment === 'writeMail' ? 'in' : ''}>메일 작성</Link><p />
-                        <Link to="/student/mail/watchMail " className={thirdSegment === 'watchMail' ? 'in' : ''}>메일 보기</Link>
+                        <Link to="/admin/mail/writeMail" className={thirdSegment === 'writeMail' ? 'in' : ''}>메일 작성</Link><p />
+                        <Link to="/admin/mail/watchMail " className={thirdSegment === 'watchMail' ? 'in' : ''}>메일 보기</Link>
                     </div>
                 )}
 
-                {user && user.role === 'PROFESSOR' && (
+                {role === 'PROFESSOR' && (
                     <div className="professor-mail">
                         <Link to="/professor/mail/writeMail" className={thirdSegment === 'writeMail' ? 'in' : ''}>메일 작성</Link><p />
                         <Link to="/professor/mail/watchMail" className={thirdSegment === 'watchMail' ? 'in' : ''}>메일 보기</Link>

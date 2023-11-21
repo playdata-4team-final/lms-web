@@ -4,8 +4,6 @@ import MailService from "../../../../mail_service/MailService";
 
 const MailMenu = () => {
 
-
-
     return (<>
         <MailService/>
     </>

@@ -1,0 +1,37 @@
+.my_page_container {
+  display: flex;
+  margin-top: 100px;
+}
+.my_page_lecture_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  margin: 15px 10px;
+}
+.my_page_text {
+  font-size: 20px;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.my_sidebar {
+  width: 200px;
+  background-color: #ded1d1;
+  padding: 20px;
+}
+
+.my_sidebar div {
+  display: flex;
+  flex-direction: column;
+}
+
+.my_sidebar span {
+  margin-bottom: 10px;
+}
+.my_img_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

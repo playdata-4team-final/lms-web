@@ -1,4 +1,4 @@
-import {Route, Routes, BrowserRouter} from "react-router-dom"
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Home from "../../pages/home/Home";
 import WriteMail from "../../pages/mail_service/WriteMail";
 import WatchMail from "../../pages/mail_service/WatchMail";
@@ -85,4 +85,3 @@ const GlobalRoutes = () => {
 }
 
 export default GlobalRoutes;
-
