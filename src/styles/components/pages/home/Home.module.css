@@ -1,0 +1,34 @@
+.home_container {
+  padding: 0 20px;
+}
+
+.button_container {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-around;
+  height: 8vh;
+  width: 100%;
+}
+
+.slide_title {
+  margin-top: 16px;
+  margin-bottom: 4px;
+  font-size: 20px;
+}
+
+.main_slide {
+  height: 25vh;
+}
+.store_slide {
+  height: 25vh;
+}
+
+.review_slide_container {
+  height: 30vh;
+}
+
+.review_box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

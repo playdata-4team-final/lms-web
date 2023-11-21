@@ -1,4 +1,4 @@
-import {Route, Routes, BrowserRouter} from "react-router-dom"
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Home from "../../pages/home/Home";
 import WriteMail from "../../pages/mail_service/WriteMail";
 import WatchMail from "../../pages/mail_service/WatchMail";
@@ -12,18 +12,17 @@ import StudentBox from "../../pages/right_box/StudentBox";
 import ProfessorBox from "../../pages/right_box/ProfessorBox";
 import ApplyLecture from "../../pages/lecture_service/ApplyLecture";
 import MyLecture from "../../pages/lecture_service/MyLecture";
-import SendLecture from "../../pages/request_service/SendLecture";
+import SendLecture from "../../pages/lecture_service/SendLecture";
 import MainLayout from "../template/MainLayout";
-
-
-
 import GetRoleRoute from "./GetRoleRoute";
-import WatchNoticeDetails from "../../pages/notice__service/WatchNoticeDetails";
-
+import GetStudentGrade from "../../pages/grade_service/GetStudentGrade";
+import GetProfessorGrade from "../../pages/grade_service/GetProfessorGrade";
+import {useState} from "react";
 
 // GlobalRoutes.jsx
 // ...
 const GlobalRoutes = () => {
+    const [type, setType] = useState();
     return (
         <BrowserRouter>
             <Routes>
@@ -43,7 +42,6 @@ const GlobalRoutes = () => {
                             <Route path="notice/*">
                                 <Route path="writeNotice" element={<WriteNotice/>}/>
                                 <Route path="watchNotice" element={<WatchNotice/>}/>
-                                <Route path="watchNotice/details/:id" element={<WatchNoticeDetails />} />
                             </Route>
                         </Route>
                         <Route path="/student/*" element={<StudentBox/>}>
@@ -57,7 +55,9 @@ const GlobalRoutes = () => {
                             </Route>
                             <Route path="notice/*">
                                 <Route path="watchNotice" element={<WatchNotice/>}/>
-                                <Route path="watchNotice/details/:id" element={<WatchNoticeDetails />}/>
+                            </Route>
+                            <Route path="grade/*">
+                                <Route path="get" element={<GetStudentGrade/>}/>
                             </Route>
                         </Route>
                         <Route path="/professor/*" element={<ProfessorBox/>}>
@@ -72,8 +72,9 @@ const GlobalRoutes = () => {
                             <Route path="notice/*">
                                 <Route path="writeNotice" element={<WriteNotice/>}/>
                                 <Route path="watchNotice" element={<WatchNotice/>}/>
-                                <Route path="watchNotice" element={<WatchNotice />}/>
-                                <Route path="watchNotice/details/:id" element={<WatchNoticeDetails />} />
+                            </Route>
+                            <Route path="grade/*">
+                                <Route path=":type" element={<GetProfessorGrade/>}/>
                             </Route>
                         </Route>
                     </Route>
@@ -84,4 +85,3 @@ const GlobalRoutes = () => {
 }
 
 export default GlobalRoutes;
-
