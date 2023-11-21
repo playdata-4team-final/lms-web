@@ -1,7 +1,10 @@
 // MySidebar.jsx
 import React from "react";
 import styled from "styled-components";
+import { useRecoilValue } from "recoil";
+import { roleAtom } from "../../global/atom/LoginAtom";
 
+import { useNavigate } from "react-router";
 const SidebarContainer = styled.div`
   position: fixed;
   left: 0;
@@ -69,51 +72,113 @@ const StyledList = styled.li`
   }
 `;
 const MySidebar = () => {
+  const userRole = useRecoilValue(roleAtom);
+  const nav = useNavigate();
+
+  const handleLectureItemClick = (lectureType) => {
+    switch (lectureType) {
+      case "myLecture":
+        nav("/student/lecture/myLecture");
+        break;
+
+      default:
+        break;
+    }
+  };
   return (
-    <SidebarContainer>
-      <Nav>
-        <StyledList className="dark">
-          <a href="#home" style={{ color: "black", textDecoration: "none" }}>
-            <div>
-              <span>내</span>
-              <span>강</span>
-              <span>의</span>
-            </div>
-          </a>
-        </StyledList>
-        <StyledList className="dark">
-          <a href="#home" style={{ color: "black", textDecoration: "none" }}>
-            <div>
-              <span>강</span>
-              <span>의</span>
-              <span>스</span>
-              <span>케</span>
-              <span>줄</span>
-            </div>
-          </a>
-        </StyledList>
-        <StyledList className="dark">
-          <a href="#home" style={{ color: "black", textDecoration: "none" }}>
-            <div>
-              <span>수</span>
-              <span>강</span>
-              <span>신</span>
-              <span>청</span>
-            </div>
-          </a>
-        </StyledList>
-        <StyledList className="dark">
-          <a href="#home" style={{ color: "black", textDecoration: "none" }}>
-            <div>
-              <span>공</span>
-              <span>지</span>
-              <span>사</span>
-              <span>항</span>
-            </div>
-          </a>
-        </StyledList>
-      </Nav>
-    </SidebarContainer>
+    <>
+      {userRole === "STUDENT" && (
+        <SidebarContainer>
+          <Nav>
+            <StyledList
+              className="dark"
+              onClick={() => handleLectureItemClick("myLecture")}
+            >
+              <div>
+                <span>강의 스케줄</span>
+              </div>
+            </StyledList>
+            <StyledList className="dark">
+              <a
+                href="#home"
+                style={{ color: "black", textDecoration: "none" }}
+              >
+                <div>
+                  <span>내강의 </span>
+                </div>
+              </a>
+            </StyledList>
+            <StyledList className="dark">
+              <a
+                href="#home"
+                style={{ color: "black", textDecoration: "none" }}
+              >
+                <div>
+                  <span>수강 신청</span>
+                </div>
+              </a>
+            </StyledList>
+            <StyledList className="dark">
+              <a
+                href="#home"
+                style={{ color: "black", textDecoration: "none" }}
+              >
+                <div>
+                  <span>공지사항</span>
+                </div>
+              </a>
+            </StyledList>
+          </Nav>
+        </SidebarContainer>
+      )}
+
+      {userRole === "PROFESSOR" && (
+        <SidebarContainer>
+          <Nav>
+            <StyledList className="dark">
+              <a
+                href="#home"
+                style={{ color: "black", textDecoration: "none" }}
+              >
+                <div>
+                  <span>내강의</span>
+                </div>
+              </a>
+            </StyledList>
+            <StyledList className="dark">
+              <a
+                href="#home"
+                style={{ color: "black", textDecoration: "none" }}
+              >
+                <div>
+                  <span>강의 스케줄</span>
+                </div>
+              </a>
+            </StyledList>
+            <StyledList className="dark">
+              <a
+                href="#home"
+                style={{ color: "black", textDecoration: "none" }}
+              >
+                <div>
+                  <span>수강 등록</span>
+                </div>
+              </a>
+            </StyledList>
+            <StyledList className="dark">
+              <a
+                href="#home"
+                style={{ color: "black", textDecoration: "none" }}
+              >
+                <div>
+                  <span>공지사항</span>
+                </div>
+              </a>
+            </StyledList>
+          </Nav>
+        </SidebarContainer>
+      )}
+    </>
   );
 };
 

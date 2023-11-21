@@ -4,10 +4,8 @@ import StudentBox from "../../right_box/StudentBox";
 import ProfessorBox from "../../right_box/ProfessorBox";
 import { useRecoilValue } from "recoil";
 import { roleAtom } from "../../../global/atom/LoginAtom";
-import HomeMain from "../../home/HomeMain";
 
 const GlobalContentBox = () => {
-
   const role = useRecoilValue(roleAtom);
   return (
     <>
@@ -30,5 +28,5 @@ const GlobalContentBox = () => {
       </div>
     </>
   );
-
+};
 export default GlobalContentBox;

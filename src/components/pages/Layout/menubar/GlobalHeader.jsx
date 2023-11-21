@@ -1,16 +1,12 @@
-
-
-import {useState} from "react";
-import {Link} from "react-router-dom";
-import "../../Layout/menubar/GlobalHedaer.css"
-import {useRecoilValue} from "recoil";
-import {idAtom, roleAtom} from "../../../global/atom/LoginAtom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import "../../Layout/menubar/GlobalHedaer.css";
+import { useRecoilValue } from "recoil";
 import HomeLogo from "../../../atoms/HomeLogo";
 import AdminMenu from "./side_menu/AdminMenu";
 import ProfessorMenu from "./side_menu/ProfessorMenu";
 import StudentMenu from "./side_menu/StudentMenu";
 import { roleAtom, idAtom } from "../../../global/atom/LoginAtom";
-import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 const CoverButton = styled.div`
@@ -44,7 +40,6 @@ const CoverButton = styled.div`
     margin-top: 3vh;
   }
 `;
-
 
 const GlobalHeader = () => {
   const userRole = useRecoilValue(roleAtom);

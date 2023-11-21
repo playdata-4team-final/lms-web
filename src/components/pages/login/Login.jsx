@@ -35,24 +35,26 @@ const Form = styled.form`
 `;
 
 const Input = styled.input`
-  padding: 10px;
+  padding: 20px; /* 적절한 패딩 값으로 조정 */
   margin: 10px 0;
+  width: ${({ $emailInput }) => ($emailInput ? "80%" : "100%")};
   border: none;
   border-bottom: 1px solid #ccc;
-  width: ${({ $emailInput }) => ($emailInput ? "84%" : "100%")};
   font-size: 16px;
   outline: none;
 `;
 const InputContainer = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   width: 100%;
+  margin-top: 10px;
 `;
 const Label = styled.label`
   font-size: 12px;
   color: #008ecf;
   text-align: left;
-  margin-top: 5px;
+  margin-top: 10px;
 `;
 
 const SmallText = styled.span`
@@ -137,25 +139,34 @@ const ButtonsContainer = styled.div`
 `;
 
 const AuthButton = styled.button`
-  padding: 5px 10px;
-  margin-left: 15px;
+  padding: 8px 15px; /* 적절한 패딩 값으로 조정 */
+  margin: 0 5px; /* 적절한 마진 값으로 조정 */
+
+  /* 나머지 스타일 유지 */
   background: #008ecf;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  width: 70%;
 `;
 
 const MajorListContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
   max-height: 200px;
   overflow-y: auto;
   border: 1px solid #ccc;
-  padding: 10px;
+  margin: 20px;
 `;
 
 const MajorItem = styled.div`
-  padding: 8px;
+  padding: 12px; /* 패딩 값을 늘려 더 크고 균일하게 만들어보겠습니다. */
   cursor: pointer;
+  transition: background-color 0.3s; /* 부드러운 배경색 전환을 위한 transition 효과 */
+
   &:hover {
     background-color: #f0f0f0;
   }
@@ -405,8 +416,11 @@ function Login() {
                 </MajorItem>
               ))}
           </MajorListContainer>
-          <AuthButton onClick={getMajors}>전공 조회</AuthButton>
+          <InputContainer>
+            <AuthButton onClick={getMajors}>전공 조회</AuthButton>
+          </InputContainer>
           <Label htmlFor="email">이메일</Label>
+
           <Input
             type="email"
             id="email"
@@ -415,19 +429,22 @@ function Login() {
             minLength={4}
             onChange={onChangeHandler}
           />
-          <AuthButton onClick={getVerificationNumber}>인증 요청</AuthButton>
+          <InputContainer>
+            <AuthButton onClick={getVerificationNumber}>인증 요청</AuthButton>
+          </InputContainer>
           <Label htmlFor="verificationNumber">인증번호</Label>
-          <div>
-            <Input
-              type="text"
-              id="verificationNumber"
-              $emailInput="true"
-              required
-              minLength={4}
-              onChange={onChangeHandler}
-            />
+
+          <Input
+            type="text"
+            id="verificationNumber"
+            $emailInput="true"
+            required
+            minLength={4}
+            onChange={onChangeHandler}
+          />
+          <InputContainer>
             <AuthButton onClick={postVerificationNumber}>인증 하기</AuthButton>
-          </div>
+          </InputContainer>
           <Label htmlFor="phNumber">전화번호</Label>
           <Input type="text" id="phNumber" onChange={onChangeHandler} />
           <Button onClick={signUp}>가입하기</Button>

@@ -1,6 +1,7 @@
 import GlobalHeader from "../../pages/Layout/menubar/GlobalHeader";
 import GlobalFooter from "../../pages/Layout/menubar/GlobalFooter";
 import GlobalContentBox from "../../pages/Layout/menubar/GlobalContentBox";
+
 import "../../pages/Layout/menubar/MainLayout.css";
 
 import Cursor from "../../atoms/Cursor";
