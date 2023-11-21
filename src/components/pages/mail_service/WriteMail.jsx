@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import {api} from "../../global/api/Api";
+import {useRecoilValue} from "recoil";
+import {idAtom, roleAtom} from "../../global/atom/LoginAtom";
+import "./WriteMail.css";
 
 
 
 const WriteMail = () => {
-    const [user, setUser] = useState({
-        id: "7d6f858a-d8bd-4074-8c6e-d9c47e21b1a6",
-        role: "PROFESSOR",
-        majorId: 1
-    });
+    const role = useRecoilValue(roleAtom);
+    const id = useRecoilValue(idAtom);
     const [formData, setFormData] = useState({
         title: '',
         email: '',
@@ -17,12 +17,15 @@ const WriteMail = () => {
     });
 
     const [myEmail, setMyEmail] = useState();
+    const [myMajorId, setMyMajorId] = useState();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = "john.doe@example.com";
-                setMyEmail(data);
+                const userData = await api(`/api/v1/member/${id}`,`GET`);
+                console.log(userData)
+                setMyEmail();
+                setMyMajorId();
             } catch (error) {
                 console.error('Error fetching email:', error);
             }
@@ -45,7 +48,7 @@ const WriteMail = () => {
             title: formData.title,
             message: formData.content,
             senderEmail: myEmail,
-            majorId: user.majorId
+            majorId: myMajorId
         };
 
 
@@ -77,9 +80,9 @@ const WriteMail = () => {
         const sendRequest = {
             title: formData.title,
             senderEmail: myEmail,
-            receiverEmail: formData.email, //얘는 api로 user의 email을 직접찾아와야함.
+            receiverEmail: formData.email,
             message: formData.content,
-            majorId: user.majorId
+            majorId: myMajorId
         };
 
 
@@ -114,7 +117,7 @@ const WriteMail = () => {
             title: formData.title,
             senderEmail: myEmail,
             message: formData.content,
-            majorId: user.majorId
+            majorId: myMajorId
         };
 
 
@@ -142,8 +145,7 @@ const WriteMail = () => {
     }
 
     return (<>
-        <div>
-            {user && (user.role === 'ADMIN') && (
+            {role === 'ADMIN' && (
                 <div className="_right-content">
                     <div>쪽지 쓰기</div>
                     <form onSubmit={handleAdminSubmit}>
@@ -180,52 +182,54 @@ const WriteMail = () => {
                 </div>
             )}
 
-            {user && (user.role === 'STUDENT') && (
+            {role === 'STUDENT' && (
                 <div className="_right-content">
-                    <div>쪽지 쓰기</div>
                     <form onSubmit={handleStudentSubmit}>
-                        <div>
-                            <label htmlFor="title">제목:</label>
-                            <input
-                                type="text"
-                                id="title"
-                                name="title"
-                                value={formData.title}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="email">작성자 이메일:</label>
-                            <input
-                                id="email"
-                                name="email"
-                                value={myEmail}
-                                readOnly={true}
-                            />
-                        </div>
-                        <div>
+                        <div className="table-content">
+                            <div className= "_table-content-write">쪽지 쓰기</div>
+                            <div className= "_table-content-divide">
+                                <label htmlFor="title">제목:</label>
+                                <input
+                                    type="text"
+                                    id="title"
+                                    name="title"
+                                    value={formData.title}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className= "_table-content-divide">
+                                <label htmlFor="email">작성자 이메일:</label>
+                                <input
+                                    id="email"
+                                    name="email"
+                                    value={myEmail}
+                                    readOnly={true}
+                                />
+                            </div>
+                            <div className= "_table-content-divide">
                                 <label htmlFor="targetEmail">대상 이메일:</label>
                                 <input
                                     id="targetEmail"
                                     name="targetEmail"
                                     value={formData.targetEmail}
                                     onChange={handleChange}/>
+                            </div>
+                            <div className= "_table-content-divide">
+                                <label htmlFor="content">내용:</label>
+                                <textarea
+                                    id="content"
+                                    name="content"
+                                    value={formData.content}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <button type="submit">보내기</button>
                         </div>
-                        <div>
-                            <label htmlFor="content">내용:</label>
-                            <textarea
-                                id="content"
-                                name="content"
-                                value={formData.content}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <button type="submit">보내기</button>
                     </form>
                 </div>
             )}
 
-            {user && (user.role === 'PROFESSOR') && (
+            {role === 'PROFESSOR' && (
                 <div className="_right-content">
                     <div>쪽지 쓰기</div>
                     <form onSubmit={handleProfessorSubmit}>
@@ -271,10 +275,6 @@ const WriteMail = () => {
                     </form>
                 </div>
             )}
-        </div>
-
-
-
         </>
 
     );

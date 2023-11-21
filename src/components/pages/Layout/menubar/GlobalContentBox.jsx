@@ -11,23 +11,15 @@ const GlobalContentBox = () => {
 
     return (
         <>
-            <div className="main_sidebar">
                 {role === 'ADMIN' && (
-                    <div className="_sidebar">
                         <AdminBox />
-                    </div>
                 )}
                 {role === 'STUDENT' && (
-                    <div className="_sidebar">
                         <StudentBox />
-                    </div>
                 )}
                 {role === 'PROFESSOR' && (
-                    <div className="_sidebar">
                         <ProfessorBox />
-                    </div>
                 )}
-            </div>
         </>
     );
 };

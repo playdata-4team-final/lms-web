@@ -39,7 +39,7 @@ const Input = styled.input`
   margin: 10px 0;
   border: none;
   border-bottom: 1px solid #ccc;
-  width: ${props => (props.$emailInput ? '84%' : '100%')};
+  width: ${({ $emailInput }) => ($emailInput ? '84%' : '100%')};
   font-size: 16px;
   outline: none;
 `;
@@ -146,7 +146,25 @@ const AuthButton = styled.button`
   cursor: pointer;
 `;
 
+const MajorListContainer = styled.div`
+  max-height: 200px; 
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px; 
+`;
+
+const MajorItem = styled.div`
+  padding: 8px;
+  cursor: pointer;
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
+
+
 function Login() {
+    const [majors, setMajors] = useState([]);
+    const [selectedMajors, setSelectedMajors] = useState([]);
     const [showSignUpModal, setShowSignUpModal] = useState(false);
     const [showFindModal, setShowFindModal] = useState(false);
     const [switchButton, setSwitchButton] = useState(true);
@@ -161,13 +179,46 @@ function Login() {
         role : "STUDENT",
         email : "",
         phNumber : "",
-        verificationNumber : ""
+        verificationNumber : "",
+        majorList:[]
     });
+
+    const getMajors = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await exceptionApi('api/v1/major/lists');
+            const majors = await response.data;
+            console.log(response.data)
+            setMajors(majors); // 전공 데이터 설정
+            setSelectedMajors([]); //빈 리스트로 초기화
+        } catch (error) {
+            console.error('Error fetching majors:', error);
+        }
+    };
+
+
+        const handleMajorSelect = (e, major) => {
+            const find = user.majorList.find(m => m.id == major.id);
+        if(find) {
+            alert ("이미 선택되었습니다.")
+            return;
+        }
+            e.preventDefault()
+            const majorList = [...user.majorList, major]
+            setUser((prevUser) => {
+                return {
+                    ...prevUser,
+                    majorList,
+                };
+            });
+            setMajors([])
+        };
 
     const onChangeHandler = (e) => {
         const { value, id } = e.target
         setUser({ ...user, [id]: value })
     }
+
 
 
     const openModal = (type) => {
@@ -205,8 +256,9 @@ function Login() {
     const signUp = async (e) => {
         e.preventDefault();
         try {
+            const data = {...user, majorIds: user.majorList.map(major => major.id)}
             if(isVerification) {
-                await exceptionApi('/api/v1/auth', 'POST', user )
+                await exceptionApi('/api/v1/auth', 'POST', data )
                 window.location.reload();
             } else {
                 alert("이메일 인증 해주세요.")
@@ -245,7 +297,7 @@ function Login() {
 
         }
     }
-
+    console.log(user)
     return (
         <>
             <Container>
@@ -291,18 +343,38 @@ function Login() {
                     <Input type="password" id="password" required minLength={4} onChange={onChangeHandler}/>
                     <Label htmlFor="name" >이름</Label>
                     <Input type="text" id="name" required minLength={4} onChange={onChangeHandler}/>
-                    <Label htmlFor="major">전공</Label>
-                    <Input type="text" id="major" onChange={onChangeHandler}/>
+                    <Label htmlFor="majorName">전공</Label>
+                    <MajorListContainer>
+                        {majors && majors.map((major) => (
+                            <MajorItem type= "button" key={major.id} onClick={(e) => handleMajorSelect(e, major)}>
+                                {major.majorName}
+                            </MajorItem>
+                        ))}
+                    </MajorListContainer>
+                    <Label htmlFor="majorName">전공</Label>
+                    <MajorListContainer>
+                        {user && user.majorList.map((major,i) => (
+                            <MajorItem type= "button" key={major+"_"+i}>
+                                {major.majorName}
+                            </MajorItem>
+                        ))}
+                    </MajorListContainer>
+                    <AuthButton onClick={getMajors}>전공 조회</AuthButton>
                     <Label htmlFor="email">이메일</Label>
-                    <InputContainer>
-                        <Input type="email" id="email" $emailInput="true" required minLength={4} onChange={onChangeHandler}/>
-                        <AuthButton onClick={getVerificationNumber}>인증 요청</AuthButton>
-                    </InputContainer>
+                    <Input
+                            type="email"
+                            id="email"
+                            $emailInput="true"
+                            required
+                            minLength={4}
+                            onChange={onChangeHandler}
+                    />
+                    <AuthButton onClick={getVerificationNumber}>인증 요청</AuthButton>
                     <Label htmlFor="verificationNumber">인증번호</Label>
-                    <InputContainer>
+                    <div>
                         <Input type="text" id="verificationNumber" $emailInput="true" required minLength={4} onChange={onChangeHandler}/>
                         <AuthButton onClick={postVerificationNumber}>인증 하기</AuthButton>
-                    </InputContainer>
+                    </div>
                     <Label htmlFor="phNumber">전화번호</Label>
                     <Input type="text" id="phNumber" onChange={onChangeHandler}/>
                     <Button onClick={signUp}>가입하기</Button>
@@ -331,12 +403,10 @@ function Login() {
                         <Button>아이디 찾기</Button>
                     ):(
                         <>
-                            <Label htmlFor="email">이메일</Label>
-                            <InputContainer>
-                                <Input type="text" id="email" $emailInput="true"/>
-                                <AuthButton>인증하기</AuthButton>
-                            </InputContainer>
-                            <Button>비밀번호 재설정</Button>
+                        <Label htmlFor="email">이메일</Label>
+                        <Input type="text" id="email" $emailInput="true"/>
+                        <AuthButton>인증하기</AuthButton>
+                        <Button>비밀번호 재설정</Button>
                         </>
                     )}
                 </Form>
