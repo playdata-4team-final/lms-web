@@ -1,25 +1,42 @@
 
 import React, { useEffect, useState } from 'react';
-
-import "./WatchMail.css";
 import {api} from "../../global/api/Api";
+import styled from "styled-components";
+import {useRecoilValue} from "recoil";
+import {idAtom, roleAtom} from "../../global/atom/LoginAtom";
 
 
 const WatchMail = () => {
-    const [user, setUser] = useState();
     const [mails, setMails] = useState([]);
     const [selectedMails, setSelectedMails] = useState([]);
+    const role = useRecoilValue(roleAtom);
+    const id = useRecoilValue(idAtom);
 
+
+
+    const StyledButton = styled.button`
+  background-color: #3498db;
+  color: #fff;
+  font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #2980b9;
+  }
+`;
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const token = { id: 1, name: "오성", role: "PROFESSOR", email: "john.doe@example.com", majorId: 1 };
-                setUser(token);
+                const majorName = await api(`api/v1/mail/majorName`,`GET`)
 
                 const watchRequest = {
-                    receiverEmail: token.email,
-                    majorId: token.majorId
+                    receiverId: id,
+                    majorName: majorName
                 };
 
                 const response = await api('api/v1/mail/getAll', 'POST', watchRequest);
@@ -59,106 +76,108 @@ const WatchMail = () => {
 
     return (
         <div className={"_right-content"}>
-            {user && user.role === 'ADMIN' && (
-                <div className="admin-mail">
-                    <button onClick={handleDeleteSelectedMails}>삭제</button>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>보낸 사람</th>
-                            <th>보낸 날짜</th>
-                            <th>제목</th>
-                            <th>내용</th>
-                        </tr>
-                        </thead>
-                        <tbody>
+            {role === 'ADMIN' && (
+                <div style={{ background: 'white', color: 'black' }}>
+                    <h2>쪽지</h2>
+                    <StyledButton onClick={handleDeleteSelectedMails}>삭제</StyledButton>
+                    <div>
+                        <div>
+                        <div>
+                            <div>보낸 사람</div>
+                            <div>보낸 날짜</div>
+                            <div>제목</div>
+                            <div>내용</div>
+                        </div>
+                        </div>
+                        <div>
                         {mails.map(mail => (
-                            <tr key={mail.id}>
-                                <td>{mail.sender}</td>
-                                <td>{mail.sendTime}</td>
-                                <td>{mail.title}</td>
-                                <td>{mail.message}</td>
-                                <td>
+                            <div key={mail.id}>
+                                <div>{mail.sender}</div>
+                                <div>{mail.sendTime}</div>
+                                <div>{mail.title}</div>
+                                <div>{mail.message}</div>
+                                <div>
                                     <input
                                         type="checkbox"
                                         onChange={(event) => handleCheckboxChange(event, mail)}
                                         checked={selectedMails.some(selectedMail => selectedMail.id === mail.id)}
                                     />
-                                </td>
-                            </tr>
+                                </div>
+                            </div>
                         ))}
-                        </tbody>
-                    </table>
+                        </div>
+                    </div>
                 </div>
             )}
 
-            {user && user.role === 'PROFESSOR' && (
-                <div className="professor-mail">
-                    <button onClick={handleDeleteSelectedMails}>삭제</button>
-                    <table>
-                        <thead>
-                        <tr>
+            {role === 'PROFESSOR' && (
+                <div style={{ background: 'white', color: 'black' }}>
+                    <h2>쪽지</h2>
+                    <div>
+                        <div>
+                        <div>
                             <th>보낸 사람</th>
                             <th>보낸 날짜</th>
                             <th>제목</th>
                             <th>내용</th>
-                        </tr>
-                        </thead>
-                        <tbody>
+                        </div>
+                        </div>
+                        <div>
                         {mails.map(mail => (
-                            <tr key={mail.id}>
-                                <td>{mail.senderEmail}</td>
-                                <td>{mail.sendTime}</td>
-                                <td>{mail.title}</td>]
-                                <td>{mail.message}</td>
-                                <td>
+                            <div key={mail.id}>
+                                <div>{mail.senderEmail}</div>
+                                <div>{mail.sendTime}</div>
+                                <div>{mail.title}</div>]
+                                <div>{mail.message}</div>
+                                <div>
                                     <input
                                         type="checkbox"
                                         onChange={(event) => handleCheckboxChange(event, mail)}
                                         checked={selectedMails.some(selectedMail => selectedMail.id === mail.id)}
                                     />
-                                </td>
-                            </tr>
+                                </div>
+                            </div>
                         ))}
-                        </tbody>
-                    </table>
+                        </div>
+                    </div>
+                    { mails.length > 0 && <div style ={{}} onClick={handleDeleteSelectedMails} style={{marginTop: `10px`}}>삭제</div> }
                 </div>
             )}
 
-            {user && user.role === 'STUDENT' && (
-                <div className="student-mail">
+            {role === 'STUDENT' && (
+                <div style={{ background: 'white', color: 'black' }}>
                     <button onClick={handleDeleteSelectedMails}>삭제</button>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>보낸 사람</th>
-                            <th>보낸 날짜</th>
-                            <th>제목</th>
-                            <th>내용</th>
-                        </tr>
-                        </thead>
-                        <tbody>
+                    <div>
+                        <div>
+                        <div>
+                            <div>보낸 사람</div>
+                            <div>보낸 날짜</div>
+                            <div>제목</div>
+                            <div>내용</div>
+                        </div>
+                        </div>
+                        <div>
                         {mails.map(mail => (
-                            <tr key={mail.id}>
-                                <td>{mail.senderEmail}</td>
-                                <td>{mail.sendTime}</td>
-                                <td>{mail.title}</td>]
-                                <td>{mail.message}</td>
-                                <td>
+                            <div key={mail.id}>
+                                <div>{mail.senderEmail}</div>
+                                <div>{mail.sendTime}</div>
+                                <div>{mail.title}</div>]
+                                <div>{mail.message}</div>
+                                <div>
                                     <input
                                         type="checkbox"
                                         onChange={(event) => handleCheckboxChange(event, mail)}
                                         checked={selectedMails.some(selectedMail => selectedMail.id === mail.id)}
                                     />
-                                </td>
-                            </tr>
+                                </div>
+                            </div>
                         ))}
-                        </tbody>
-                    </table>
+                        </div>
+                    </div>
                 </div>
             )}
 
-            {!user && (
+            {!role && (
                 <div>유저 정보를 불러오는 중입니다...</div>
             )}
         </div>

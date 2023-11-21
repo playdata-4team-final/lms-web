@@ -1,42 +1,22 @@
-._right-content {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+.table-content{
+    text-align: left;
+
 }
 
-._right-content div {
-    font-size: 1.5em;
+._table-content-write {
+    width: 100%;
+    margin-bottom: 20px;
+}
+._table-content-divide{
+    display: grid;
+    grid-template-columns: 2fr 4fr 4fr;
     margin-bottom: 20px;
 }
 
-._right-content label {
-    font-weight: bold;
+._table-content-divide2{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
 }
 
-._right-content input,
-._right-content textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1em;
-}
-
-._right-content button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 1em;
-    cursor: pointer;
-}
-
-._right-content button:hover {
-    background-color: #0056b3;
-}

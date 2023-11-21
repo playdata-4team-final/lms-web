@@ -1,8 +1,3 @@
-// improt css
-// "main_header": div 전체 틀, 색깔, 글씨체
-// "first_menu": className:"user-image"
-// className="user-name",  className="logout,  className="mailBox"
-
 
 import {useState} from "react";
 import {Link} from "react-router-dom";
