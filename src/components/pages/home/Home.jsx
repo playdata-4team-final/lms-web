@@ -1,8 +1,7 @@
 import React from "react";
 import styles from "../../../styles/components/pages/home/Home.module.css";
-import { useRecoilValue } from "recoil";
-
 import HomeMain from "./HomeMain";
+
 
 const Home = () => {
   return (

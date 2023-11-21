@@ -7,6 +7,7 @@ import { roleAtom } from "../../../global/atom/LoginAtom";
 import HomeMain from "../../home/HomeMain";
 
 const GlobalContentBox = () => {
+
   const role = useRecoilValue(roleAtom);
   return (
     <>
@@ -29,6 +30,5 @@ const GlobalContentBox = () => {
       </div>
     </>
   );
-};
 
 export default GlobalContentBox;

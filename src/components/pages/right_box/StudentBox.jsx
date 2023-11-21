@@ -3,9 +3,8 @@ import {Outlet} from "react-router";
 
 const StudentBox = ({children}) => {
 
-    return (<div>
+    return (
             <Outlet>{children}</Outlet>
-        </div>
     )
 
 }
