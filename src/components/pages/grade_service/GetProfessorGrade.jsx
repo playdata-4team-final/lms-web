@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {api} from "../../global/api/Api";
+import {useParams} from "react-router";
 
 const GradeReportContainer = styled.div`
   max-width: 800px;
@@ -11,7 +12,7 @@ const GradeReportContainer = styled.div`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
-const SubjectTable = styled.table`
+const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
@@ -19,7 +20,7 @@ const SubjectTable = styled.table`
 
 const TableHeader = styled.th`
   padding: 15px;
-  text-align: left;
+  text-align: center;
   background-color: #ddd;
 `;
 
@@ -31,6 +32,7 @@ const TableRow = styled.tr`
 
 const TableCell = styled.td`
   padding: 15px;
+  text-align: center;
   border-bottom: 1px solid #ddd;
 
   &:last-child {
@@ -46,18 +48,71 @@ const AverageCell = styled(TableCell)`
   font-weight: bold;
 `;
 
-const GetProfessorGrade = () => {
+const Button = styled.button`
+  padding: 10px 20px;
+  background: #008ecf;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+`;
 
+const Modal = styled.div`
+  display: ${props => (props.$show ? 'block' : 'none')};
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 80%;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px 50px 50px 50px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translate(-50%, -50%);
+  text-align: center;
+  overflow: auto;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+`;
+
+const Input = styled.input`
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  width: 30%;
+  font-size: 16px;
+  outline: none;
+`;
+
+const GetProfessorGrade = () => {
+    const { type } = useParams();
+
+    const [lectures, setLectures] = useState([]);
     const [grades, setGrades] = useState([]);
+    const [requestGrades, setRequestGrades] = useState([]);
     const [selectedYear, setSelectedYear] = useState('2023');
     const [selectedSemester, setSelectedSemester] = useState('first');
-    const getGrade = async () => {
+    const [showModal, setShowModal] = useState(false);
+    const [lectureId, setLectureId] = useState();
+    const [score, setScore] = useState();
+
+    const getLecture = async () => {
         const request = {
             "year" : selectedYear,
             "semester" : selectedSemester
         };
-        const response = await api("/api/v1/grade","POST",request)
-        setGrades(response.data);
+        const response = await api("/api/v1/grade/professor","POST",request)
+        setLectures(response.data);
         console.log(response);
         console.log(response.data);
     }
@@ -69,8 +124,62 @@ const GetProfessorGrade = () => {
         setSelectedSemester(e.target.value);
     };
 
+    const setGradeList = async (id) => {
+        setShowModal(true);
+        const response = await api(`/api/v1/grade/professor/${id}`,"GET")
+        console.log(response.data)
+        setGrades(response.data)
+        setLectureId(id)
+    }
+
+    const updateGradeList = async (id) => {
+        setShowModal(true);
+        const response = await api(`/api/v1/grade/${id}`,"GET")
+        console.log('흠')
+        console.log(response.data)
+        setGrades(response.data)
+        setLectureId(id)
+    }
+    const closeModal = () => {
+        setShowModal(false);
+    };
+
+    const setGrade = async () => {
+        const updatedGrades = requestGrades.map((grade) => {
+            return {
+                studentId: grade.studentId,
+                score: grade.score
+            };
+        });
+
+        const response = await api(`/api/v1/grade/${lectureId}`,'POST',updatedGrades)
+    }
+
+    const updateGrade = async (lectureId,studentId) => {
+        const request = {
+            studentId : studentId,
+            score : score
+        }
+        console.log(request);
+        const response = await api(`/api/v1/grade/${lectureId}`,'PUT',request)
+    }
+    const handleInputChange = (event, index, field) => {
+        const updatedGradeList = [...grades]; // 상태 복제
+        updatedGradeList[index][field] = event.target.value; // 변경된 값을 반영
+
+        // 변경된 리스트를 상태로 업데이트
+        setRequestGrades(updatedGradeList);
+        console.log("----")
+        console.log(requestGrades)
+        console.log("----")
+    };
+
+    const onChangeHandler = (e) => {
+        setScore(e.target.value);
+    }
+
     useEffect(() => {
-        getGrade();
+        getLecture();
         console.log(selectedSemester)
     },[selectedYear,selectedSemester]);
 
@@ -90,29 +199,93 @@ const GetProfessorGrade = () => {
                     </select>
                 </div>
                 <h2>강의 내역</h2>
-                <SubjectTable>
+                <Table>
                     <thead>
                     <TableRow>
                         <TableHeader>순번</TableHeader>
                         <TableHeader>강의명</TableHeader>
                         <TableHeader></TableHeader>
                         <TableHeader></TableHeader>
-                        <TableHeader></TableHeader>
+                        <TableHeader>성적입력</TableHeader>
                     </TableRow>
                     </thead>
                     <tbody>
-                    {grades.map((grade) => (
-                        <TableRow key={grade.id}>
-                            <TableCell>{grade.id}</TableCell>
-                            <TableCell>{grade.lectureName}</TableCell>
+                    {lectures.map((lecture) => (
+                        <TableRow key={lecture.id}>
+                            <TableCell>{lecture.id}</TableCell>
+                            <TableCell>{lecture.lectureName}</TableCell>
                             <TableCell></TableCell>
                             <TableCell></TableCell>
-                            <TableCell></TableCell>
+                            {type === 'set' && (
+                            <TableCell>
+                                <Button onClick={() => setGradeList(lecture.id)}>성적입력</Button>
+                            </TableCell>
+                            )}
+                            {type === 'update' && (
+                                <TableCell>
+                                    <Button onClick={() => updateGradeList(lecture.id)}>성적수정</Button>
+                                </TableCell>
+                            )}
                         </TableRow>
                     ))}
                     </tbody>
-                </SubjectTable>
+                </Table>
             </GradeReportContainer>
+            <Modal $show={showModal}>
+                <CloseButton onClick={closeModal}>X</CloseButton>
+                <Table>
+                    <thead>
+                    <TableRow>
+                        <TableHeader>순번</TableHeader>
+                        <TableHeader>강의명</TableHeader>
+                        <TableHeader>이름</TableHeader>
+                        {type === 'update' && (
+                            <>
+                                <TableHeader>점수</TableHeader>
+                                <TableHeader>학점</TableHeader>
+                            </>
+                        )}
+                        <TableHeader>성적입력</TableHeader>
+                        {type === 'update' && (
+                            <TableHeader>수정</TableHeader>
+                        )}
+                    </TableRow>
+                    </thead>
+                    <tbody>
+                    {grades.map((grade,index) => (
+                        <TableRow key={index+1}>
+                            <TableCell>{index+1}</TableCell>
+                            <TableCell>{grade.lectureName}</TableCell>
+                            <TableCell>{grade.studentName}</TableCell>
+                            {type === 'update' && (
+                                <>
+                                    <TableCell>{grade.score}</TableCell>
+                                    <TableCell>{grade.credit}</TableCell>
+                                </>
+                            )}
+                            {type === 'set' && (
+                                <TableCell>
+                                    <Input type="text" id="score" onChange={(event) => handleInputChange(event, index, 'score')}  />
+                                </TableCell>
+                            )}
+                            {type === 'update' && (
+                                <TableCell>
+                                    <Input type="text" id="score" onChange={onChangeHandler}  />
+                                </TableCell>
+                            )}
+                            {type === 'update' && (
+                                <TableCell>
+                                    <Button onClick={() => updateGrade(grade.lectureId,grade.studentId)}>성적수정</Button>
+                                </TableCell>
+                            )}
+                        </TableRow>
+                    ))}
+                    </tbody>
+                </Table>
+                {type === 'set' && (
+                    <Button onClick={() => setGrade()}>성적입력</Button>
+                )}
+            </Modal>
         </div>
     );
 };

@@ -11,7 +11,7 @@ const GradeReportContainer = styled.div`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
-const SubjectTable = styled.table`
+const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
@@ -19,7 +19,7 @@ const SubjectTable = styled.table`
 
 const TableHeader = styled.th`
   padding: 15px;
-  text-align: left;
+  text-align: center;
   background-color: #ddd;
 `;
 
@@ -32,7 +32,7 @@ const TableRow = styled.tr`
 const TableCell = styled.td`
   padding: 15px;
   border-bottom: 1px solid #ddd;
-
+  text-align: center;
   &:last-child {
     border-bottom: none;
   }
@@ -90,7 +90,7 @@ const GetStudentGrade = () => {
                 </select>
             </div>
                 <h2>수강 내역</h2>
-                <SubjectTable>
+                <Table>
                     <thead>
                     <TableRow>
                         <TableHeader>순번</TableHeader>
@@ -118,7 +118,7 @@ const GetStudentGrade = () => {
                         <AverageCell>1</AverageCell>
                     </AverageRow>
                     </tfoot>
-                </SubjectTable>
+                </Table>
             </GradeReportContainer>
         </div>
     );

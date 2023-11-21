@@ -17,19 +17,19 @@ import MainLayout from "../template/MainLayout";
 import GetRoleRoute from "./GetRoleRoute";
 import GetStudentGrade from "../../pages/grade_service/GetStudentGrade";
 import GetProfessorGrade from "../../pages/grade_service/GetProfessorGrade";
+import {useState} from "react";
 
 // GlobalRoutes.jsx
 // ...
 const GlobalRoutes = () => {
+    const [type, setType] = useState();
     return (
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Login/>}/>
-                {/*<Route path="/reissue" element={<Login/>}/>*/}
                 <Route element={<GetRoleRoute/>}>
                     <Route element={<MainLayout/>}>
                         <Route path="/main" element={<Home/>}/>
-
                         <Route path="/admin/*" element={<AdminBox/>}>
                             <Route path="accept/*">
                                 <Route path="acceptMajor" element={<AcceptMajor/>}/>
@@ -74,7 +74,7 @@ const GlobalRoutes = () => {
                                 <Route path="watchNotice" element={<WatchNotice/>}/>
                             </Route>
                             <Route path="grade/*">
-                                <Route path="get" element={<GetProfessorGrade/>}/>
+                                <Route path=":type" element={<GetProfessorGrade/>}/>
                             </Route>
                         </Route>
                     </Route>

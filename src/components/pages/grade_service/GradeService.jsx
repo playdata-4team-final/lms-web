@@ -16,9 +16,14 @@ const GradeService = () => {
                 </div>
             )}
             {role && role === 'PROFESSOR' && (
-                <div className="">
-                    <Link to="/professor/grade/get" className={thirdSegment === 'get' ? 'in' : ''}>성적 입력</Link><p />
-                </div>
+                <>
+                    <div className="">
+                        <Link to="/professor/grade/set" className={thirdSegment === 'set' ? 'in' : ''}>성적 입력</Link><p />
+                    </div>
+                    <div className="">
+                        <Link to="/professor/grade/update" className={thirdSegment === 'update' ? 'in' : ''}>성적 수정</Link><p />
+                    </div>
+                </>
             )}
         </div>
     );
